@@ -5,8 +5,6 @@ import 'Screens/homescreen.dart';
 
 void main(){
   runApp(const Attendance());
-
-  print("This is second Commit");
 }
 
 class Attendance extends StatelessWidget {
