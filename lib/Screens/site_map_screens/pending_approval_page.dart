@@ -80,6 +80,7 @@ class PendingApprovalPage extends StatelessWidget {
                                   MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(pendingLeavesController.pendingLeaveList[index].comments,
+                                        softWrap: true,
                                         style: Ktextstylecarddate5),
                                     Text(pendingLeavesController.pendingLeaveList[index].leaveCount
                                         .toString())
