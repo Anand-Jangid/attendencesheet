@@ -32,27 +32,7 @@ class PendingApprovalPage extends StatelessWidget {
                     height: 90.0,
                     child: InkWell(
                       onTap: (){
-                        // showDialog(
-                        //     context: context,
-                        //     builder: (context){
-                        //       return AlertDialog(
-                        //         title: Text("Accept/Reject ?"),
-                        //         actions: [
-                        //           TextButton(
-                        //               onPressed: (){
-                        //                 ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Active");
-                        //                 pendingLeavesController.pendingLeaveList.removeAt(index);
-                        //                 Navigator.pop(context);
-                        //               },
-                        //               child: Text("Accept")),
-                        //           TextButton(onPressed: (){
-                        //             ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Reject");
-                        //             pendingLeavesController.pendingLeaveList.removeAt(index);
-                        //             Navigator.pop(context);
-                        //           }, child: Text("Reject")),
-                        //         ],
-                        //       );
-                        //     });
+
                         Get.defaultDialog(
                           title: "Accept/Reject ?",
                           textCancel: "Reject",

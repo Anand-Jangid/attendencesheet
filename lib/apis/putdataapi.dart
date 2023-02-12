@@ -8,6 +8,10 @@ import '../models/usermodel.dart';
 
 class ApiService{
 
+  static void updatedList(List<PendingLeaveApprovalModel1> users){
+    users.sort((a, b) => b.leaveDate.compareTo(a.leaveDate));
+  }
+
   Future<UserModel> getData5(String description,String duration,String name,String date) async {
     var body1=json.encode({
       "body": {
@@ -204,7 +208,7 @@ class ApiService{
     List<PendingLeaveApprovalModel1> leavesList = [];
     var response = await http.post(
         Uri.parse(
-            'https://devxnet.cubastion.net/api/v1/leavesLedger/getLeavesByRMApplication'),
+            '$baseURL/leavesLedger/getLeavesByRMApplication'),
         headers: {'token': tokens, 'Content-Type': 'application/json'},
         body: json.encode({
           "body": {"emailAddress": "anand.jangid@cubastion.com"}
@@ -232,7 +236,7 @@ class ApiService{
             approverNumber: leavesList1[i]["Approver Number"],
             employeeId: leavesList1[i]["Employee Id"]));
       }
-
+      updatedList(leavesList);
       return leavesList;
     }
     else{
