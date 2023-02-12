@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../apis/putdataapi.dart';
 import '../../../../constants.dart';
+import '../../../../models/employee_leave_model1.dart';
 
 class CompoffScreen extends StatefulWidget {
   @override
@@ -177,8 +178,15 @@ class _CompoffScreenState extends State<CompoffScreen> {
                                   "You can't apply compOff 3 days after your working date or Future Date.");
                             }
                             else{
-                              await ApiService.setCompOffData(dateController.text, compoffcount.dropDownValue!.value.toString(), description.text);
-                              Get.back();
+                              EmployeeLeaveModel1 employeeLeaveModel = await ApiService.setCompOffData(dateController.text, compoffcount.dropDownValue!.value.toString(), description.text);
+                              if(employeeLeaveModel.status == "1234567890"){
+                                Get.snackbar("Unable to apply Comp Off", "You have alredy applied for given date",
+                                  snackPosition: SnackPosition.TOP,
+                                );
+                              }
+                              else{
+                                Get.back();
+                              }
                             }
 
                           },
