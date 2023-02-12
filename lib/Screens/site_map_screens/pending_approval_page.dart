@@ -2,6 +2,7 @@ import 'package:attendencesheet/apis/putdataapi.dart';
 import 'package:attendencesheet/controllers/pending_leaves_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../constants.dart';
 
 class PendingApprovalPage extends StatelessWidget {
@@ -71,7 +72,7 @@ class PendingApprovalPage extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    Text("${pendingLeavesController.pendingLeaveList[index].leaveDate} (${pendingLeavesController.pendingLeaveList[index].leaveType} )",style: Ktextstylecarddate5)
+                                    Text("${DateFormat('dd-MM-yyyy').format(pendingLeavesController.pendingLeaveList[index].leaveDate)} (${pendingLeavesController.pendingLeaveList[index].leaveType} )",style: Ktextstylecarddate5)
                                   ],
                                 ),
                                 Row(
