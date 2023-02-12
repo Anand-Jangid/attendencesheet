@@ -21,7 +21,7 @@ class PendingApprovalPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Flexible(
+          Expanded(
             child: Obx(() {
               if(pendingLeavesController.isLoading.value){
                 return const Center(child: CircularProgressIndicator());
@@ -29,65 +29,65 @@ class PendingApprovalPage extends StatelessWidget {
               return ListView.builder(
                 itemCount: pendingLeavesController.pendingLeaveList.length,
                 itemBuilder: (context, index){
-                  return Container(
-                    height: 90.0,
-                    child: InkWell(
-                      onTap: (){
-
-                        Get.defaultDialog(
-                          title: "Accept/Reject ?",
-                          textCancel: "Reject",
-                          textConfirm: "Accept",
-                          barrierDismissible: true,
-                          onConfirm: () async{
-                            await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Active");
-                            pendingLeavesController.pendingLeaveList.removeAt(index);
-                          },
-                          onCancel: () async{
-                            await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Reject");
-                            pendingLeavesController.pendingLeaveList.removeAt(index);
-                          }
-                        );
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(18.0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(pendingLeavesController.pendingLeaveList[index].employeeFirstName,
-                                            style: Ktextstylecarddate6),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          pendingLeavesController.pendingLeaveList[index].employeeLastName,
-                                          style: Ktextstylecarddate6,
-                                        ),
-                                      ],
-                                    ),
-                                    Text("${DateFormat('dd-MM-yyyy').format(pendingLeavesController.pendingLeaveList[index].leaveDate)} (${pendingLeavesController.pendingLeaveList[index].leaveType} )",style: Ktextstylecarddate5)
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(pendingLeavesController.pendingLeaveList[index].comments,
-                                        softWrap: true,
+                  return InkWell(
+                    onTap: (){
+                      Get.defaultDialog(
+                        title: "Accept/Reject ?",
+                        textCancel: "Reject",
+                        textConfirm: "Accept",
+                        barrierDismissible: true,
+                        onConfirm: () async{
+                          await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Active");
+                          pendingLeavesController.pendingLeaveList.removeAt(index);
+                        },
+                        onCancel: () async{
+                          await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Reject");
+                          pendingLeavesController.pendingLeaveList.removeAt(index);
+                        }
+                      );
+                    },
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(pendingLeavesController.pendingLeaveList[index].employeeFirstName,
+                                          style: Ktextstylecarddate6),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        pendingLeavesController.pendingLeaveList[index].employeeLastName,
+                                        style: Ktextstylecarddate6,
+                                      ),
+                                    ],
+                                  ),
+                                  Text("${DateFormat('dd-MM-yyyy').format(pendingLeavesController.pendingLeaveList[index].leaveDate)} (${pendingLeavesController.pendingLeaveList[index].leaveType} )",style: Ktextstylecarddate5)
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(pendingLeavesController.pendingLeaveList[index].comments,
+                                        softWrap: false,
+                                        maxLines: 999,
+                                        overflow: TextOverflow.ellipsis,
                                         style: Ktextstylecarddate5),
-                                    Text(pendingLeavesController.pendingLeaveList[index].leaveCount
-                                        .toString())
-                                  ],
-                                ),
-                              ]),
-                        ),
+                                  ),
+                                  Text(pendingLeavesController.pendingLeaveList[index].leaveCount
+                                      .toString())
+                                ],
+                              ),
+                            ]),
                       ),
                     ),
                   );

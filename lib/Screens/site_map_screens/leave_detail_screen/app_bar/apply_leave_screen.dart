@@ -18,7 +18,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   TextEditingController dateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final numberOfDaysController = SingleValueDropDownController();
-  TextEditingController manager =TextEditingController(text:'Akshay Sir');
+  TextEditingController manager =TextEditingController(text:'Akshay Kalia');
 
   @override
   Widget build(BuildContext context) {
