@@ -240,15 +240,14 @@ class ApiService{
 
   static Future<List<PendingLeaveApprovalModel1>> getPendingLeaveData() async {
     List<PendingLeaveApprovalModel1> leavesList = [];
+    var body = json.encode({
+      "body": {"emailAddress": "anand.jangid@cubastion.com"}
+    });
     var response = await http.post(
-        Uri.parse(
-            '$baseURL/leavesLedger/getLeavesByRMApplication'),
+        Uri.parse('$baseURL/leavesLedger/getLeavesByRMApplication'),
         headers: {'token': tokens, 'Content-Type': 'application/json'},
-        body: json.encode({
-          "body": {"emailAddress": "anand.jangid@cubastion.com"}
-        }));
+        body: body);
     if(response.statusCode == 200){
-      print("123");
       var jsonData = jsonDecode(response.body);
       var leavesList1 = jsonData["SiebelMessage"]["CUBN Employee Leave Apply BC"];
       for(int i=0; i<leavesList1.length; i++){
@@ -277,6 +276,33 @@ class ApiService{
     else{
       print(response.body);
       print(response.statusCode);
+      throw Exception("Status code is not 200");
+    }
+
+  }
+
+  /// API for getting list of expenses
+  static Future<List> getExpenses() async{
+    var headers = {
+      'token': tokens
+    };
+    var response = await http.post(
+      Uri.parse("$baseURL/expenses/queryExpense"),
+      headers: headers
+    );
+
+    if(response.statusCode == 200){
+      var jsonResponse = jsonDecode(response.body);
+      print("1");
+      print(jsonResponse);
+      var employeeExpensesList = jsonResponse["SiebelMessage"]["CUBN Expenses"];
+      print("2");
+      print(employeeExpensesList);
+      print(employeeExpensesList.runtimeType);
+      print("3");
+      return employeeExpensesList;
+    }
+    else{
       throw Exception("Status code is not 200");
     }
 
