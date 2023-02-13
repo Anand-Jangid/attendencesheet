@@ -24,47 +24,47 @@ class EmployeeLeaveModel1 {
     required this.employeeLastName,
   });
 
-  String type;
-  String approverMidName;
-  String approverId;
-  DateTime leaveDate;
-  String leaveCount;
-  String id;
-  String employeeFirstName;
-  String employeeMidName;
-  String comments;
-  String employeeNumber;
-  String leaveType;
-  String status;
-  String approverFirstName;
-  String approverLastName;
-  String financialYearId;
-  String employeeLastName;
+  String? type;
+  String? approverMidName;
+  String? approverId;
+  DateTime? leaveDate;
+  String? leaveCount;
+  String? id;
+  String? employeeFirstName;
+  String? employeeMidName;
+  String? comments;
+  String? employeeNumber;
+  String? leaveType;
+  String? status;
+  String? approverFirstName;
+  String? approverLastName;
+  String? financialYearId;
+  String? employeeLastName;
 
   factory EmployeeLeaveModel1.fromJson(Map<String, dynamic> json) => EmployeeLeaveModel1(
-    type: json["Type"],
-    approverMidName: json["Approver Mid Name"],
-    approverId: json["Approver Id"],
+    type: json["Type"] ?? "",
+    approverMidName: json["Approver Mid Name"] ?? "",
+    approverId: json["Approver Id"] ?? "",
     leaveDate: DateTime.parse(json["Leave Date"]),
-    leaveCount: json["Leave Count"],
-    id: json["Id"],
-    employeeFirstName: json["Employee First Name"],
-    employeeMidName: json["Employee Mid Name"],
-    comments: json["Comments"],
-    employeeNumber: json["Employee Number"],
-    leaveType: json["Leave Type"],
-    status: json["Status"],
-    approverFirstName: json["Approver First Name"],
-    approverLastName: json["Approver Last Name"],
-    financialYearId: json["Financial Year Id"],
-    employeeLastName: json["Employee Last Name"],
+    leaveCount: json["Leave Count"] ?? "",
+    id: json["Id"] ?? "",
+    employeeFirstName: json["Employee First Name"] ?? "",
+    employeeMidName: json["Employee Mid Name"]  ?? "",
+    comments: json["Comments"]  ?? "",
+    employeeNumber: json["Employee Number"]  ?? "",
+    leaveType: json["Leave Type"] ?? "",
+    status: json["Status"] ?? "",
+    approverFirstName: json["Approver First Name"] ?? "",
+    approverLastName: json["Approver Last Name"] ?? "",
+    financialYearId: json["Financial Year Id"] ?? "",
+    employeeLastName: json["Employee Last Name"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {
     "Type": type,
     "Approver Mid Name": approverMidName,
     "Approver Id": approverId,
-    "Leave Date": "${leaveDate.year.toString().padLeft(4, '0')}-${leaveDate.month.toString().padLeft(2, '0')}-${leaveDate.day.toString().padLeft(2, '0')}",
+    "Leave Date": "${leaveDate!.year.toString().padLeft(4, '0')}-${leaveDate!.month.toString().padLeft(2, '0')}-${leaveDate!.day.toString().padLeft(2, '0')}",
     "Leave Count": leaveCount,
     "Id": id,
     "Employee First Name": employeeFirstName,

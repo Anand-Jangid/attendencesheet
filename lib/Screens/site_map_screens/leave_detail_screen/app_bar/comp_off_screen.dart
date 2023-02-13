@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../constants.dart';
+import '../../../../models/employee_leave_model1.dart';
 
 
-class ApplyLeaveScreen extends StatefulWidget {
+class CompOffScreen extends StatefulWidget {
 
   @override
-  State<ApplyLeaveScreen> createState() => _ApplyLeaveScreenState();
+  State<CompOffScreen> createState() => _CompOffScreenState();
 }
 
-class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
+class _CompOffScreenState extends State<CompOffScreen> {
 
   bool isLoading = false;
   // final ReportingManagerController reportingManagerController1 = ReportingManagerController();
@@ -162,16 +163,16 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                   // ),
                   // Text(manager);
                   Container(
-                    height: 60,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.black),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text("${reportingManagerController.reportingManagerFirstName.value} ${reportingManagerController.reporintManagerLastName.value}",style: KtextstyleActivity1,),
-                    )),
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text("${reportingManagerController.reportingManagerFirstName.value} ${reportingManagerController.reporintManagerLastName.value}",style: KtextstyleActivity1,),
+                      )),
                 ],
               ),
               Row(children: [
@@ -197,33 +198,30 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                   child: SizedBox(
                       height: 60,
                       child: GestureDetector(
-                          onTap: () async{
-                            setState(() {
-                              isLoading = true;
-                            });
-                            var  employeeLeaveModel = await ApiService.setLeaveData(
-                                dateController.text,
-                                numberOfDaysController.dropDownValue!.value.toString(),
-                                descriptionController.text);
-                            if(employeeLeaveModel.status == "1234567890"){
-                              print("1234567890");
-                              print("status code 203");
-                              Get.snackbar("Unable to apply leave", "You have alredy applied for given date",
-                                snackPosition: SnackPosition.TOP,
-                              );
-                              setState(() {
-                                isLoading = false;
-                              });
+                          onTap: () async {
+                            var typedDate = DateTime.parse(dateController.text.toString());
+                            var earlyDate = DateTime.now().subtract(const Duration(days: 3));
+                            if(typedDate.isAfter(DateTime.now())){
+                              Get.snackbar("Unable to apply comp off",
+                                  "You can't apply compOff 3 days after your working date or Future Date.");
+                            }
+                            else if(typedDate.isBefore(earlyDate)){
+                              Get.snackbar("Unable to apply comp off",
+                                  "You can't apply compOff 3 days after your working date or Future Date.");
                             }
                             else{
-                              setState(() {
-                                isLoading = false;
-                              });
-                              print("status code 200");
-                              print("1234567890");
-                              Get.back();
-                              Get.back();
+                              EmployeeLeaveModel1 employeeLeaveModel = await ApiService.setCompOffData(dateController.text, numberOfDaysController.dropDownValue!.value.toString(), descriptionController.text);
+                              if(employeeLeaveModel.status == "1234567890"){
+                                Get.snackbar("Unable to apply Comp Off", "You have alredy applied for given date",
+                                  snackPosition: SnackPosition.TOP,
+                                );
+                              }
+                              else{
+                                Get.back();
+                                Get.back();
+                              }
                             }
+
                           },
                           child: const Card(
                               color: Colors.orangeAccent,
@@ -231,9 +229,9 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                   child: Text(
                                     'SUBMIT',
                                     style: Ktextstylecardbutton,
-                                  )))
-                      )),
-                )])
+                                  ))))),
+                )
+              ])
             ],
           ),
         ),

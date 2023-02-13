@@ -2,6 +2,7 @@ import 'package:attendencesheet/Screens/site_map_screens/expense_report.dart';
 import 'package:attendencesheet/Screens/site_map_screens/leave_detail_screen/leave_detail_screen.dart';
 import 'package:attendencesheet/Screens/site_map_screens/pending_approval_page.dart';
 import 'package:attendencesheet/Screens/site_map_screens/project_expense.dart';
+import 'package:attendencesheet/controllers/reporting_manager_controller.dart';
 import 'package:attendencesheet/models/site_map_card_model.dart';
 import 'package:attendencesheet/widgets/site_map_card.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Map> User = [];
 
+  String firstName = "";
+  String lastName = "";
+
+  final ReportingManagerController reportingManagerController = Get.put(ReportingManagerController());
+
   Future<List<Map>> getData() async {
     User.clear();
     http.Response response = await http.post(
@@ -33,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
     var data = jsonDecode(response.body.toString());
     var datas = data['SiebelMessage']['Employee']['CUBN Attendance'];
     if (response.statusCode == 200) {
+      firstName = data['SiebelMessage']['Employee']["Reporting Manager First Name"];
+      lastName = data['SiebelMessage']['Employee']["Reporting Manager Last Name"];
       for (Map i in datas) {
         User.add(i);
       }
@@ -90,6 +98,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 FutureBuilder(
                     future: getData(),
                     builder: (context, snapshot) {
+                      print(firstName);
+                      reportingManagerController.reportingManagerFirstName.value = firstName;
+                      reportingManagerController.reporintManagerLastName.value = lastName;
                       if (snapshot.hasData) {
                         if(snapshot.connectionState == ConnectionState.done){
                           return SizedBox(
@@ -101,11 +112,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 reverse: true,
                                 itemBuilder: (context, index) {
                                   double hour = 0;
-                                  List<dynamic> Timesheet =
-                                  User[index]['CUBN Timesheet'];
+                                  List<dynamic> Timesheet = User[index]['CUBN Timesheet'];
                                   if (Timesheet.length == 0) {
                                     hour = 0;
-                                  } else {
+                                  }
+                                  else {
                                     for (int i = 0; i < Timesheet.length; i++) {
                                       hour = hour + double.parse(Timesheet[i]["Number of Hours"]);
                                     }

@@ -1,4 +1,5 @@
 import 'package:attendencesheet/Screens/site_map_screens/leave_detail_screen/app_bar/apply_leave_screen.dart';
+import 'package:attendencesheet/Screens/site_map_screens/leave_detail_screen/app_bar/comp_off_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendencesheet/constants.dart';
 import 'package:get/get.dart';
@@ -49,7 +50,7 @@ class LeaveDetailScreen extends StatelessWidget {
               fontSize: 15,
               fontWeight: FontWeight.w700)),
           actions: [
-            TextButton(onPressed: () => Get.to(() => CompoffScreen()), child: const Text('Earn Comp Off', style: TextStyle(fontSize: 10.0),)),
+            TextButton(onPressed: () => Get.to(() => CompOffScreen()), child: const Text('Earn Comp Off', style: TextStyle(fontSize: 10.0),)),
             TextButton(onPressed: () => Get.to(() => ApplyLeaveScreen()), child: const Text('Apply Leave', style: TextStyle(fontSize: 10.0),))
           ],
         ),

@@ -5,11 +5,15 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../constants.dart';
 
-class PendingApprovalPage extends StatelessWidget {
+class PendingApprovalPage extends StatefulWidget {
 
-  final PendingLeavesController pendingLeavesController = Get.put(
-      PendingLeavesController());
+  @override
+  State<PendingApprovalPage> createState() => _PendingApprovalPageState();
+}
 
+class _PendingApprovalPageState extends State<PendingApprovalPage> {
+  final PendingLeavesController pendingLeavesController = Get.put(PendingLeavesController());
+     
   @override
   Widget build(BuildContext context) {
     return Scaffold(

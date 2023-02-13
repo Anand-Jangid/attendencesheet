@@ -8,6 +8,21 @@ import '../models/usermodel.dart';
 
 class ApiService{
 
+  // Future<List<Map>> getData() async {
+  //   http.Response response = await http.post(
+  //       Uri.parse(
+  //           'https://devxnet.cubastion.net/api/v1/employee/queryEmployee'),
+  //       headers: {'token': tokens});
+  //   var data = jsonDecode(response.body.toString());
+  //   var datas = data['SiebelMessage']['Employee']['CUBN Attendance'];
+  //   if (response.statusCode == 200) {
+  //
+  //     return User;
+  //   } else {
+  //     return User;
+  //   }
+  // }
+
   static void updatedList(List<PendingLeaveApprovalModel1> users){
     users.sort((a, b) => b.leaveDate.compareTo(a.leaveDate));
   }
@@ -82,11 +97,30 @@ class ApiService{
     );
     var jsonResponse = jsonDecode(response.body);
     if(response.statusCode == 200){
-      employeeLeaveModel = EmployeeLeaveModel1.fromJson(jsonResponse);
+      employeeLeaveModel = EmployeeLeaveModel1.fromJson(jsonResponse["SiebelMessage"]["CUBN Employee Leave Apply BC"]);
+      return employeeLeaveModel;
     }
     else if(response.statusCode == 203){
+      // employeeLeaveModel = EmployeeLeaveModel1(
+      //     type: "Debit",
+      //     approverMidName: "",
+      //     approverId: "",
+      //     leaveDate: DateTime.now(),
+      //     leaveCount: "",
+      //     id: "",
+      //     employeeFirstName: "",
+      //     employeeMidName: "",
+      //     comments: "",
+      //     employeeNumber: "",
+      //     leaveType: "",
+      //     status: "1234567890",
+      //     approverFirstName: "",
+      //     approverLastName: "",
+      //     financialYearId: "",
+      //     employeeLastName: ""
+      // );
       employeeLeaveModel = EmployeeLeaveModel1(
-          type: "Debit",
+          type: "",
           approverMidName: "",
           approverId: "",
           leaveDate: DateTime.now(),
@@ -101,13 +135,13 @@ class ApiService{
           approverFirstName: "",
           approverLastName: "",
           financialYearId: "",
-          employeeLastName: ""
-      );
+          employeeLastName: "");
+      return employeeLeaveModel;
     }
     else{
       throw Exception("Something is wrong \n Status code is ${response.statusCode}");
     }
-    return employeeLeaveModel;
+
   }
 
   /// API for applying Comp Off
@@ -141,7 +175,7 @@ class ApiService{
     );
     if(response.statusCode == 200){
       var jsonResponse = jsonDecode(response.body);
-      compOffModel = EmployeeLeaveModel1.fromJson(jsonResponse);
+      compOffModel = EmployeeLeaveModel1.fromJson(jsonResponse["SiebelMessage"]["CUBN Employee Leave Apply BC"]);
     }
     else if(response.statusCode == 203){
       compOffModel = EmployeeLeaveModel1(
@@ -214,6 +248,7 @@ class ApiService{
           "body": {"emailAddress": "anand.jangid@cubastion.com"}
         }));
     if(response.statusCode == 200){
+      print("123");
       var jsonData = jsonDecode(response.body);
       var leavesList1 = jsonData["SiebelMessage"]["CUBN Employee Leave Apply BC"];
       for(int i=0; i<leavesList1.length; i++){
