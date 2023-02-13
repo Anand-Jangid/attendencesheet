@@ -12,6 +12,7 @@ class PendingApprovalPage extends StatefulWidget {
 }
 
 class _PendingApprovalPageState extends State<PendingApprovalPage> {
+  bool isLoading = false;
   final PendingLeavesController pendingLeavesController = Get.put(PendingLeavesController());
      
   @override
@@ -37,17 +38,45 @@ class _PendingApprovalPageState extends State<PendingApprovalPage> {
                     onTap: (){
                       Get.defaultDialog(
                         title: "Accept/Reject ?",
-                        textCancel: "Reject",
-                        textConfirm: "Accept",
+                        // textCancel: "Reject",
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                            onPressed: () async{
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Active");
+                              pendingLeavesController.pendingLeaveList.removeAt(index);
+                              Get.back();
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }, child: (isLoading) ? const Center(child: CircularProgressIndicator()) : const Text("Accept")),
+                            const SizedBox(width: 10,),
+                            ElevatedButton(onPressed: () async{
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Rejected");
+                              pendingLeavesController.pendingLeaveList.removeAt(index);
+                              Get.back();
+                            }, child: (isLoading) ? const Center(child: CircularProgressIndicator()) : const Text("Reject")),
+                          ],
+                        ),
+                        // textConfirm: "Accept",
                         barrierDismissible: true,
-                        onConfirm: () async{
-                          await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Active");
-                          pendingLeavesController.pendingLeaveList.removeAt(index);
-                        },
-                        onCancel: () async{
-                          await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Reject");
-                          pendingLeavesController.pendingLeaveList.removeAt(index);
-                        }
+                        // onConfirm: () async{
+                        //   await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Active");
+                        //   pendingLeavesController.pendingLeaveList.removeAt(index);
+                        //   // Get.back();
+                        // },
+                        // onCancel: () async{
+                        //   await ApiService.setLeaveAcceptReject(pendingLeavesController.pendingLeaveList[index].id, "Rejected");
+                        //   pendingLeavesController.pendingLeaveList.removeAt(index);
+                        //   // Get.back();
+                        // }
                       );
                     },
                     child: Card(
