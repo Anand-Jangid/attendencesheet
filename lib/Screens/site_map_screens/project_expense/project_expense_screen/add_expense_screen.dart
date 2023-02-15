@@ -12,6 +12,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../../constants.dart';
 import '../../../../controllers/employee_expense_controller.dart';
 import '../../../../widgets/drop_down_textfield.dart';
+import 'package:path/path.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   AddExpenseScreen({Key? key}) : super(key: key);
@@ -32,64 +33,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   final submitProjectExpenseController = Get.put(SubmitProjectExpenseController());
 
-  // String filePath = "";
-  //
-  // void getPDFFile() async{
-  //   final pickedFile1 = await FilePicker.platform.pickFiles();
-  //   if(pickedFile1 != null){
-  //     filePath = pickedFile1.paths.first!;
-  //     Get.snackbar("Image Selected", "");
-  //   }else{
-  //     print("No image selected");
-  //   }
-  // }
-
-  // showDialogOpt(BuildContext context) {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (context) => SimpleDialog(
-  //             backgroundColor: Colors.white,
-  //             children: [
-  //               SimpleDialogOption(
-  //                   onPressed: () async{
-  //                     await imagePickerController.getFile();
-  //                     imagePickerController.imagePicked.value = true;
-  //                     Get.back();
-  //                   },
-  //                   child: Row(
-  //                     children: const [
-  //                       Icon(Icons.home_repair_service_rounded),
-  //                       SizedBox(
-  //                         width: 20,
-  //                       ),
-  //                       Text('Gallery')
-  //                     ],
-  //                   )),
-  //               SimpleDialogOption(
-  //                   onPressed: () {},
-  //                   child: Row(
-  //                     children: [
-  //                       Icon(Icons.camera_alt),
-  //                       SizedBox(
-  //                         width: 20,
-  //                       ),
-  //                       Text('Camera')
-  //                     ],
-  //                   )),
-  //               SimpleDialogOption(
-  //                   onPressed: () => Get.back(),
-  //                   child: Row(
-  //                     children: [
-  //                       Icon(Icons.close),
-  //                       SizedBox(
-  //                         width: 20,
-  //                       ),
-  //                       Text('Close')
-  //                     ],
-  //                   )),
-  //             ],
-  //           ));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +148,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     color: Colors.grey,
                     fontWeight: FontWeight.w900),
               ),
-              //DateTextField(dateController: dateController),
               TextField(
                 controller: dateController,
                 readOnly: true,
@@ -253,15 +195,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                               child: const Text("Use Camera")),
                           TextButton(
                               onPressed: () async {
-                                // setState(() {
-                                //   loadingData = true;
-                                // });
-                                // await ApiService.getFile();
-                                // setState(() {
-                                //   loadingData = false;
-                                // });
                                 await imagePickerController.getFile();
-                                //getPDFFile();
                                 imagePickerController.imagePicked.value = true;
                                 Get.back();
                               },
@@ -327,7 +261,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                 ),
                               )
                             ],
-                          )
+                          ),
+                          Text(basename(imagePickerController.filePath.value)),
                         ],
                       )
                     : Container();
