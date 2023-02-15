@@ -18,20 +18,8 @@ class ApplyLeaveScreen extends StatefulWidget {
 class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
 
   bool isLoading = false;
-  // final ReportingManagerController reportingManagerController1 = ReportingManagerController();
-  // String reportingManagerName = "${reportingManagerController1.reportingManagerFirstName} ${reportingManagerController1.reporintManagerLastName}";
-  final ReportingManagerController reportingManagerController = Get.find();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    final ReportingManagerController reportingManagerController = Get.find();
-    print(reportingManagerController.reportingManagerFirstName);
 
-    // final ReportingManagerController reportingManagerController1 = ReportingManagerController();
-    String reportingManagerName = "${reportingManagerController.reportingManagerFirstName} ${reportingManagerController.reporintManagerLastName}";
-    // TextEditingController manager =TextEditingController(text:reportingManagerName);
-  }
+  final ReportingManagerController reportingManagerController = Get.find();
 
   TextEditingController dateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -67,29 +55,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                       )),
                   const SizedBox(height: 10),
                   ///Calendar textfield
-                  // TextField(
-                  //   controller: dateController,
-                  //   readOnly: true,
-                  //   onTap: () async {
-                  //     DateTime? pickedDate = await showDatePicker(
-                  //         context: context,
-                  //         initialDate: DateTime.now(),
-                  //         firstDate: DateTime(2000),
-                  //         lastDate: DateTime(2100));
-                  //     if (pickedDate != null) {
-                  //       String formatteddate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                  //       setState(() {
-                  //         dateController.text = formatteddate;
-                  //       });
-                  //     }
-                  //   },
-                  //   decoration: InputDecoration(
-                  //       hintText: 'Select Date',
-                  //       focusedBorder: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.circular(7)),
-                  //       enabledBorder: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.circular(7))),
-                  // ),
                   DateTextField(dateController: dateController),
                   const SizedBox(height: 20),
                   ///description text
@@ -123,27 +88,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                       )),
                   const SizedBox(height: 10),
                   ///Number of days textfield
-                  // DropDownTextField(
-                  //   textFieldDecoration: InputDecoration(
-                  //       hintText: 'Select Days',
-                  //       hintStyle: KtextstyleActivity,
-                  //       enabledBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(color: Colors.grey),
-                  //           borderRadius: BorderRadius.circular(10.0)),
-                  //       focusedBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(color: Colors.grey),
-                  //           borderRadius: BorderRadius.circular(10.0))),
-                  //   controller: numberOfDaysController,
-                  //   clearOption: true,
-                  //   dropdownRadius: 10.0,
-                  //   textStyle: KtextstyleActivity1,
-                  //   listTextStyle: KtextstyleActivity1,
-                  //   dropDownList: const [
-                  //     DropDownValueModel(name: '0.5', value: '0.5'),
-                  //     DropDownValueModel(name: '1', value: '1')
-                  //   ],
-                  //   onChanged: (val) {},
-                  // ),
                   DropDownTextFielD(
                       dropDownList: const [
                         DropDownValueModel(name: '0.5', value: '0.5'),
@@ -159,19 +103,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                         style: KtextstyleActivity,
                       )),
                   const SizedBox(height: 10),
-                  // TextFormField(
-                  //   style:KtextstyleActivity1,
-                  //   controller: manager,
-                  //   readOnly: true,
-                  //   decoration: InputDecoration(
-                  //     hintStyle: KtextstyleActivity1,
-                  //     focusedBorder: OutlineInputBorder(
-                  //         borderSide: BorderSide(color: Colors.grey)),
-                  //     border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(10.0)),
-                  //   ),
-                  // ),
-                  // Text(manager);
                   Container(
                     height: 60,
                     width: double.infinity,
@@ -218,8 +149,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                 numberOfDaysController.dropDownValue!.value.toString(),
                                 descriptionController.text);
                             if(employeeLeaveModel.status == "1234567890"){
-                              print("1234567890");
-                              print("status code 203");
                               Get.snackbar("Unable to apply leave", "You have alredy applied for given date",
                                 snackPosition: SnackPosition.TOP,
                               );
@@ -231,8 +160,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               setState(() {
                                 isLoading = false;
                               });
-                              print("status code 200");
-                              print("1234567890");
                               Get.back();
                               Get.back();
                             }

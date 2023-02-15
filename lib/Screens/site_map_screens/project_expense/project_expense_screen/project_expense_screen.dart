@@ -1,4 +1,5 @@
 import 'package:attendencesheet/Screens/site_map_screens/project_expense/project_expense_screen/add_expense_screen.dart';
+import 'package:attendencesheet/apis/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,12 @@ class ProjectExpenseScreen extends StatefulWidget {
 
 class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
   final employeeExpenseController = Get.put(EmployeeExpenseController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +58,19 @@ class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
             SizedBox(
               height: 50,
               child: InkWell(
-                onTap: () => Get.to(() => AddExpenseScreen()),
+                onTap: () => Get.to(() => AddExpenseScreen())!.then((value) {
+                  employeeExpenseController.fetchExpenseData();
+                  setState(() {
+
+                  });
+                }),
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.brown
                   ),
-                  child: Center(child: Text("+ ADD NEW EXPENSE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),)),
+                  child: const Center(child: Text("+ ADD NEW EXPENSE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),)),
                 ),
               ),
             )

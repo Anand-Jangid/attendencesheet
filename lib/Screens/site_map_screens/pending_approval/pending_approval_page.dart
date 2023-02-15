@@ -3,7 +3,7 @@ import 'package:attendencesheet/controllers/pending_leaves_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../constants.dart';
+import '../../../constants.dart';
 
 class PendingApprovalPage extends StatefulWidget {
 

@@ -1,6 +1,8 @@
+import 'package:attendencesheet/controllers/submit_project_expense_controller.dart';
 import 'package:attendencesheet/models/add_project_expense_model.dart';
 import 'package:attendencesheet/models/leave_approval_model.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../constants.dart';
@@ -9,6 +11,8 @@ import '../models/pending_leave_aproval_model1.dart';
 import '../models/usermodel.dart';
 
 class ApiService{
+
+  static final SubmitProjectExpenseController submitProjectExpenseController = Get.find();
 
   static var filePath = "";
 
@@ -282,6 +286,7 @@ class ApiService{
     if(response.statusCode == 200){
       var jsonResponse = jsonDecode(response.body);
       var employeeExpensesList = jsonResponse["SiebelMessage"]["CUBN Expenses"];
+      print("Successfully ran");
       return employeeExpensesList;
     }
     else{
@@ -320,8 +325,9 @@ class ApiService{
   }
 
   //adding project expense
-  static Future<void> uploadImage(String voucher, String voucherDate,String expenseType, String amount, String description, String projectId,) async{
+  static Future<void> uploadImage(String voucher, String voucherDate,String expenseType, String amount, String description, String projectId) async{
     //AddProjectExpenseModel? addProjectExpenseModel;
+    submitProjectExpenseController.showSpinner.value = true;
     var headers = {
       'token': tokens
     };
@@ -339,12 +345,14 @@ class ApiService{
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
+      submitProjectExpenseController.showSpinner.value = false;
       //addProjectExpenseModel = addProjectExpenseModelFromJson(await response.stream.bytesToString());
       print(await response.stream.bytesToString());
       print("image has been uploaded");
       // return addProjectExpenseModel;
     }
     else {
+      submitProjectExpenseController.showSpinner.value = false;
       print(response.reasonPhrase);
       throw Exception("image is not uploaded");
     }

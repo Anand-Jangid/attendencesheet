@@ -1,6 +1,6 @@
 import 'package:attendencesheet/Screens/site_map_screens/expense_report/expense_report_screen.dart';
 import 'package:attendencesheet/Screens/site_map_screens/leave_detail_screen/leave_detail_screen.dart';
-import 'package:attendencesheet/Screens/site_map_screens/pending_approval_page.dart';
+import 'package:attendencesheet/Screens/site_map_screens/pending_approval/pending_approval_page.dart';
 import 'package:attendencesheet/Screens/site_map_screens/project_expense/project_expense_screen/project_expense_screen.dart';
 import 'package:attendencesheet/controllers/reporting_manager_controller.dart';
 import 'package:attendencesheet/models/site_map_card_model.dart';
@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:attendencesheet/Screens/cardscreen.dart';
-import 'package:attendencesheet/Screens/site_map_screens/salaryscreen.dart';
+import 'package:attendencesheet/Screens/site_map_screens/salary_screen/salaryscreen.dart';
 import 'package:attendencesheet/Screens/viewallscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendencesheet/constants.dart';

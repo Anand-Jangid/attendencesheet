@@ -25,17 +25,5 @@ class EmployeeExpenseController extends GetxController{
       isLoading(false);
     }
   }
-  // void fetchLeaveList() async{
-  //   try{
-  //     isLoading(true);
-  //     var leaves = await ApiService.getPendingLeaveData();
-  //     if( leaves != null){
-  //       pendingLeaveList.value = leaves;
-  //     }
-  //   }
-  //   finally{
-  //     isLoading(false);
-  //   }
-  // }
 
 }
