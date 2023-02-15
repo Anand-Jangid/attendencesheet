@@ -14,7 +14,7 @@ class ApiService{
 
   static final SubmitProjectExpenseController submitProjectExpenseController = Get.find();
 
-  static var filePath = "";
+  // static var filePath = "";
 
   static void updatedList(List<PendingLeaveApprovalModel1> users){
     users.sort((a, b) => b.leaveDate.compareTo(a.leaveDate));
@@ -314,18 +314,18 @@ class ApiService{
   }
 
   //adding project expense
-  static Future getImage() async{
+  static Future getFile() async{
     final pickedFile1 = await FilePicker.platform.pickFiles();
     if(pickedFile1 != null){
-      filePath = pickedFile1.paths.first!;
-      print("---------------------- File has been selected -------------------------");
+      var filePath = pickedFile1.paths.first!;
+      return filePath;
     }else{
       print("No image selected");
     }
   }
 
   //adding project expense
-  static Future<void> uploadImage(String voucher, String voucherDate,String expenseType, String amount, String description, String projectId) async{
+  static Future<void> uploadImage(String voucher, String voucherDate,String expenseType, String amount, String description, String projectId, String filePath) async{
     //AddProjectExpenseModel? addProjectExpenseModel;
     submitProjectExpenseController.showSpinner.value = true;
     var headers = {

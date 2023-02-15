@@ -16,11 +16,6 @@ class ProjectExpenseScreen extends StatefulWidget {
 class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
   final employeeExpenseController = Get.put(EmployeeExpenseController());
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +56,6 @@ class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
                 onTap: () => Get.to(() => AddExpenseScreen())!.then((value) {
                   employeeExpenseController.fetchExpenseData();
                   setState(() {
-
                   });
                 }),
                 child: Container(
