@@ -27,13 +27,13 @@ class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Obx(() {
-              if(employeeExpenseController.isLoading.value){
-                return const Center(child: CircularProgressIndicator());
-              }
-              else{
-                return Expanded(
-                  child: ListView.builder(
+            Expanded(
+              child: Obx(() {
+                if(employeeExpenseController.isLoading.value){
+                  return const Center(child: CircularProgressIndicator());
+                }
+                else{
+                  return ListView.builder(
                       itemCount: employeeExpenseController.expensesList.length,
                       itemBuilder: (context, index){
                         return InkWell(
@@ -46,10 +46,10 @@ class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
                             projectName: employeeExpenseController.expensesList[index]["Project Name"],
                           ),
                         );
-                      }),
-                );
-              }
-            }),
+                      });
+                }
+              }),
+            ),
             SizedBox(
               height: 50,
               child: InkWell(
@@ -62,7 +62,7 @@ class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
                   height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.brown
+                      color: Colors.yellow
                   ),
                   child: const Center(child: Text("+ ADD NEW EXPENSE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),)),
                 ),
