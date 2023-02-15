@@ -1,5 +1,7 @@
-import 'package:attendencesheet/apis/putdataapi.dart';
+import 'package:attendencesheet/apis/api_service.dart';
 import 'package:attendencesheet/controllers/reporting_manager_controller.dart';
+import 'package:attendencesheet/widgets/date_text_field.dart';
+import 'package:attendencesheet/widgets/drop_down_textfield.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,29 +67,30 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                       )),
                   const SizedBox(height: 10),
                   ///Calendar textfield
-                  TextField(
-                    controller: dateController,
-                    readOnly: true,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100));
-                      if (pickedDate != null) {
-                        String formatteddate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                        setState(() {
-                          dateController.text = formatteddate;
-                        });
-                      }
-                    },
-                    decoration: InputDecoration(
-                        hintText: 'Select Date',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(7)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(7))),
-                  ),
+                  // TextField(
+                  //   controller: dateController,
+                  //   readOnly: true,
+                  //   onTap: () async {
+                  //     DateTime? pickedDate = await showDatePicker(
+                  //         context: context,
+                  //         initialDate: DateTime.now(),
+                  //         firstDate: DateTime(2000),
+                  //         lastDate: DateTime(2100));
+                  //     if (pickedDate != null) {
+                  //       String formatteddate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                  //       setState(() {
+                  //         dateController.text = formatteddate;
+                  //       });
+                  //     }
+                  //   },
+                  //   decoration: InputDecoration(
+                  //       hintText: 'Select Date',
+                  //       focusedBorder: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(7)),
+                  //       enabledBorder: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(7))),
+                  // ),
+                  DateTextField(dateController: dateController),
                   const SizedBox(height: 20),
                   ///description text
                   const Padding(
@@ -120,26 +123,34 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                       )),
                   const SizedBox(height: 10),
                   ///Number of days textfield
-                  DropDownTextField(
-                    textFieldDecoration: InputDecoration(
-                        hintText: 'Select Days',
-                        hintStyle: KtextstyleActivity,
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0))),
+                  // DropDownTextField(
+                  //   textFieldDecoration: InputDecoration(
+                  //       hintText: 'Select Days',
+                  //       hintStyle: KtextstyleActivity,
+                  //       enabledBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(color: Colors.grey),
+                  //           borderRadius: BorderRadius.circular(10.0)),
+                  //       focusedBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(color: Colors.grey),
+                  //           borderRadius: BorderRadius.circular(10.0))),
+                  //   controller: numberOfDaysController,
+                  //   clearOption: true,
+                  //   dropdownRadius: 10.0,
+                  //   textStyle: KtextstyleActivity1,
+                  //   listTextStyle: KtextstyleActivity1,
+                  //   dropDownList: const [
+                  //     DropDownValueModel(name: '0.5', value: '0.5'),
+                  //     DropDownValueModel(name: '1', value: '1')
+                  //   ],
+                  //   onChanged: (val) {},
+                  // ),
+                  DropDownTextFielD(
+                      dropDownList: const [
+                        DropDownValueModel(name: '0.5', value: '0.5'),
+                        DropDownValueModel(name: '1', value: '1')
+                      ],
+                    hintText: 'Select Days',
                     controller: numberOfDaysController,
-                    clearOption: true,
-                    dropdownRadius: 10.0,
-                    textStyle: KtextstyleActivity1,
-                    listTextStyle: KtextstyleActivity1,
-                    dropDownList: const [
-                      DropDownValueModel(name: '0.5', value: '0.5'),
-                      DropDownValueModel(name: '1', value: '1')
-                    ],
-                    onChanged: (val) {},
                   ),
                   const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 9),
@@ -174,6 +185,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                     )),
                 ],
               ),
+              /// cancel and submit buttons
               Row(children: [
                 Expanded(
                     flex: 4,

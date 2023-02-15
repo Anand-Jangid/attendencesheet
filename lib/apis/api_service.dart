@@ -1,4 +1,6 @@
+import 'package:attendencesheet/models/add_project_expense_model.dart';
 import 'package:attendencesheet/models/leave_approval_model.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../constants.dart';
@@ -8,20 +10,7 @@ import '../models/usermodel.dart';
 
 class ApiService{
 
-  // Future<List<Map>> getData() async {
-  //   http.Response response = await http.post(
-  //       Uri.parse(
-  //           'https://devxnet.cubastion.net/api/v1/employee/queryEmployee'),
-  //       headers: {'token': tokens});
-  //   var data = jsonDecode(response.body.toString());
-  //   var datas = data['SiebelMessage']['Employee']['CUBN Attendance'];
-  //   if (response.statusCode == 200) {
-  //
-  //     return User;
-  //   } else {
-  //     return User;
-  //   }
-  // }
+  static var filePath = "";
 
   static void updatedList(List<PendingLeaveApprovalModel1> users){
     users.sort((a, b) => b.leaveDate.compareTo(a.leaveDate));
@@ -290,20 +279,74 @@ class ApiService{
       Uri.parse("$baseURL/expenses/queryExpense"),
       headers: headers
     );
-
     if(response.statusCode == 200){
       var jsonResponse = jsonDecode(response.body);
-      print("1");
-      print(jsonResponse);
       var employeeExpensesList = jsonResponse["SiebelMessage"]["CUBN Expenses"];
-      print("2");
-      print(employeeExpensesList);
-      print(employeeExpensesList.runtimeType);
-      print("3");
       return employeeExpensesList;
     }
     else{
       throw Exception("Status code is not 200");
+    }
+
+  }
+  //getting expense report List
+  static Future<List> getExpenseReport() async{
+    var headers = {
+      'token': tokens
+    };
+    var response = await http.post(
+      Uri.parse("$baseURL/expenseReport/queryExpenseReport"),
+      headers: headers
+    );
+    if(response.statusCode == 200){
+      var jsonData = jsonDecode(response.body);
+      var expenseReportList = jsonData["SiebelMessage"]["CUBN Expense Report"];
+      return expenseReportList;
+    }
+    else{
+      throw Exception("Satus code is not 200 \n it is ${response.statusCode}");
+    }
+  }
+
+  //adding project expense
+  static Future getImage() async{
+    final pickedFile1 = await FilePicker.platform.pickFiles();
+    if(pickedFile1 != null){
+      filePath = pickedFile1.paths.first!;
+      print("---------------------- File has been selected -------------------------");
+    }else{
+      print("No image selected");
+    }
+  }
+
+  //adding project expense
+  static Future<void> uploadImage(String voucher, String voucherDate,String expenseType, String amount, String description, String projectId,) async{
+    //AddProjectExpenseModel? addProjectExpenseModel;
+    var headers = {
+      'token': tokens
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('https://devxnet.cubastion.net/api/v1/expenses/upsertExpense'));
+    request.fields.addAll({
+      'voucher': voucher,
+      'voucherDate': voucherDate,
+      'expenseType': expenseType,
+      'currency': 'INR',
+      'amount': amount,
+      'description': description,
+      'projectId': projectId
+    });
+    request.files.add(await http.MultipartFile.fromPath('xnetFiles', filePath));
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      //addProjectExpenseModel = addProjectExpenseModelFromJson(await response.stream.bytesToString());
+      print(await response.stream.bytesToString());
+      print("image has been uploaded");
+      // return addProjectExpenseModel;
+    }
+    else {
+      print(response.reasonPhrase);
+      throw Exception("image is not uploaded");
     }
 
   }

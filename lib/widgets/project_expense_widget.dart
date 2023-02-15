@@ -20,73 +20,59 @@ class PeojectExpenseWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(0.0),
-      child: Row(
+    return GestureDetector(
+      onTap: () {},
+      child: Flex(
+        direction: Axis.horizontal,
         children: [
-          Expanded(
-              child: Container(
-            child: GestureDetector(
-              onTap: () {},
-              child: Flexible(
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(18.0),
-                    child: Column(
+          Flexible(
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                        'INR $expenseAmount',
-                                        style: Ktextstylecarddate6),
-                                    SizedBox.fromSize(
-                                      child: SizedBox(width: 15.0),
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        '$expenseType :$projectName',
-                                        softWrap: true,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.w900),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                  DateFormat('dd MMM yyyy').format(DateFormat('MM/dd/y').parse(expenseDate)),
-                                  style: Ktextstylecarddate6)
-                            ],
+                          Flexible(
+                            child: Row(
+                              children: [
+                                Flexible(child: Text('INR $expenseAmount', style: Ktextstylecarddate6)),
+                                const SizedBox(width: 15.0),
+                                Flexible(
+                                  child: Text(
+                                    '$expenseType :$projectName',
+                                    softWrap: true,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w900),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(expenseDescription,
-                                  style: Ktextstylecarddate5),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                color: Colors.grey,
-                              )
-                            ],
-                          ),
-                        ]),
-                  ),
-                ),
+                          Flexible(
+                            child: Text(DateFormat('dd MMM yyyy').format(DateFormat('MM/dd/y').parse(expenseDate)),
+                                style: Ktextstylecarddate6),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(expenseDescription, style: Ktextstylecarddate5),
+                          const Icon(Icons.keyboard_arrow_right, color: Colors.grey,)
+                        ],
+                      ),
+                    ]),
               ),
             ),
-          ))
+          ),
         ],
       ),
     );
