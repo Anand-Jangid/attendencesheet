@@ -19,9 +19,7 @@ class ExpenseReportScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          children: [
-            (expenseReportController.isLoading.value) ?
-            const Center(child: CircularProgressIndicator()) :
+          children: [(expenseReportController.isLoading.value) ? const Center(child: CircularProgressIndicator()) :
             Expanded(
               child: ListView.builder(
                 itemCount: expenseReportController.expenseReportList.length,
@@ -34,7 +32,7 @@ class ExpenseReportScreen extends StatelessWidget {
                   );
                 }),
             ),
-            const Spacer(),
+            // const Spacer(),
             SizedBox(
               height: 50,
               child: InkWell(

@@ -94,12 +94,14 @@ class AddExpenseReport extends StatelessWidget {
               height: 50,
               child: InkWell(
                 onTap: () {
-                  Get.to(ExpenseReportSummary(
-                      startDate: startDateController.text,
-                      endDate: endDateController.text,
-                      projectName: projectController.dropDownValue!.value,
-                      description: descriptionController.text,
-                      reportName: reportNameController.text));
+                  Get.to( () => ExpenseReportSummary(
+                    startDate: startDateController.text,
+                    endDate: endDateController.text,
+                    projectName: projectController.dropDownValue!.value,
+                    description: descriptionController.text,
+                    reportName: reportNameController.text,
+                    currency: currencyController.dropDownValue!.value,
+                  ));
                 },
                 child: Container(
                   height: 50,

@@ -267,7 +267,6 @@ class ApiService{
     if(response.statusCode == 200){
       var jsonResponse = jsonDecode(response.body);
       var employeeExpensesList = jsonResponse["SiebelMessage"]["CUBN Expenses"];
-      print("Successfully ran");
       return employeeExpensesList;
     }
     else{
@@ -336,6 +335,50 @@ class ApiService{
       submitProjectExpenseController.showSpinner.value = false;
       print(response.reasonPhrase);
       throw Exception("image is not uploaded");
+    }
+
+  }
+
+  /// uploading expense report
+  static Future uploadExpenseReport ({required String endDate, required String startDate, required String projectName, required List expenseList, required String currency, required String reportName, required String reportDescription}) async{
+    var headers = {
+      'token': tokens,
+      'Content-Type': 'application/json'
+    };
+    var body = json.encode({
+      "body": {
+        "SiebelMessage": {
+          "IntObjectFormat": "Siebel Hierarchical",
+          "IntObjectName": "CUBNExpenseReportUpsert",
+          "ListOfCUBNExpenseReportUpsert": {
+            "CUBN Expense Report": {
+              "End Date": endDate,
+              "Expense Report Description": reportDescription,
+              "Expense Report Name": reportName,
+              "Currency Code": currency,
+              "ListOfCUBNExpenses": {
+                "CUBN Expenses": expenseList
+              },
+              "Project Name": projectName,
+              "Start Date": startDate
+            }
+          },
+          "MessageType": "Integration Object"
+        }
+      }
+    });
+    var response = await http.post(
+      Uri.parse("$baseURL/expenseReport/upsertExpenseReport"),
+      body: body,
+      headers: headers,
+    );
+
+    if(response.statusCode == 200){
+      var jsonData = jsonDecode(response.body);
+      return jsonData;
+    }
+    else{
+      throw Exception(response.statusCode);
     }
 
   }

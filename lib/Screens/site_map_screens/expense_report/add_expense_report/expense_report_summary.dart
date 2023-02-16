@@ -1,3 +1,4 @@
+import 'package:attendencesheet/apis/api_service.dart';
 import 'package:attendencesheet/controllers/employee_expense_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,15 +6,17 @@ import 'package:intl/intl.dart';
 
 import '../../../../widgets/project_expense_widget.dart';
 
-class ExpenseReportSummary extends StatelessWidget {
+class ExpenseReportSummary extends StatefulWidget {
   final String startDate;
   final String endDate;
   final String projectName;
   final String description;
   final String reportName;
+  final String currency;
 
   ExpenseReportSummary(
       {Key? key,
+      required this.currency,
       required this.startDate,
       required this.endDate,
       required this.projectName,
@@ -21,30 +24,50 @@ class ExpenseReportSummary extends StatelessWidget {
       required this.reportName})
       : super(key: key);
 
-  final employeeExpenseController = Get.put(EmployeeExpenseController());
+  @override
+  State<ExpenseReportSummary> createState() => _ExpenseReportSummaryState();
+}
 
+class _ExpenseReportSummaryState extends State<ExpenseReportSummary> {
+
+  bool isUploading = false;
+  final employeeExpenseController = Get.put(EmployeeExpenseController());
   List filteredExpenses = [];
+  List<Map> projectId = [];
+
+  void addProjectId(List expenses){
+    for(int i=0; i<expenses.length; i++){
+      projectId.add({
+        "Id" : expenses[i]["Id"]
+      });
+    }
+    //
+  }
 
   void filterList(List expenses, String startDate, String endDate, String projectName) {
+
     for (int i = 0; i < expenses.length; i++) {
       if (expenses[i]["Project Name"] == projectName) {
+
         var newDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateFormat('MM/dd/y').parse(expenses[i]["Expense Date"])));
+
         if ( newDate.isAfter(DateTime.parse(startDate)) && newDate.isBefore(DateTime.parse(endDate)) ) {
           filteredExpenses.add(expenses[i]);
         }
-        // break;
+
       }
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    String startingDate = DateFormat("dd MMM yyyy").format(DateTime.parse(startDate));
-    String endingDate = DateFormat("dd MMM yyyy").format(DateTime.parse(endDate));
+    String startingDate = DateFormat("dd MMM yyyy").format(DateTime.parse(widget.startDate));
+    String endingDate = DateFormat("dd MMM yyyy").format(DateTime.parse(widget.endDate));
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "EXPENSE REPORTS ${projectName}",
+          "EXPENSE REPORTS ${widget.projectName}",
           softWrap: true,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -79,32 +102,29 @@ class ExpenseReportSummary extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: (isUploading) ? const Center(child: CircularProgressIndicator()):Column(
           children: [
             Expanded(
               child: Obx(() {
                 if (employeeExpenseController.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
-                  filterList(employeeExpenseController.expensesList, startDate, endDate, projectName);
+                  filterList(employeeExpenseController.expensesList.value, widget.startDate, widget.endDate, widget.projectName);
+                  addProjectId(filteredExpenses);
                   return ListView.builder(
-
                     itemCount: filteredExpenses.length,
                     itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {},
-                          child: PeojectExpenseWidget(
-                            expenseAmount: filteredExpenses[index]
-                                ["Expense Amount"],
-                            expenseDate: filteredExpenses[index]
-                                ["Expense Date"],
-                            expenseDescription: filteredExpenses[index]
-                                ["Expense Description"],
-                            expenseType: filteredExpenses[index]
-                                ["Expense Type"],
-                            projectName: filteredExpenses[index]
-                                ["Project Name"],
-                          ),
+                        return PeojectExpenseWidget(
+                          expenseAmount: filteredExpenses[index]
+                              ["Expense Amount"],
+                          expenseDate: filteredExpenses[index]
+                              ["Expense Date"],
+                          expenseDescription: filteredExpenses[index]
+                              ["Expense Description"],
+                          expenseType: filteredExpenses[index]
+                              ["Expense Type"],
+                          projectName: filteredExpenses[index]
+                              ["Project Name"],
                         );
                       });
                 }
@@ -113,7 +133,24 @@ class ExpenseReportSummary extends StatelessWidget {
             SizedBox(
               height: 50,
               child: InkWell(
-                onTap: () {},
+                onTap: () async{
+                  setState(() {
+                    isUploading = true;
+                  });
+                  await ApiService.uploadExpenseReport(
+                      endDate: widget.endDate,
+                      startDate: widget.startDate,
+                      projectName: widget.projectName,
+                      expenseList: projectId,
+                      currency: widget.currency,
+                      reportName: widget.reportName,
+                      reportDescription: widget.description);
+                  setState(() {
+                    isUploading = false;
+                  });
+                  Get.back();
+                  Get.back();
+                },
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
