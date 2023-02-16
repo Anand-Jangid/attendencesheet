@@ -1,9 +1,12 @@
+import 'package:attendencesheet/Screens/site_map_screens/expense_report/add_expense_report/expense_report_summary.dart';
 import 'package:attendencesheet/widgets/drop_down_textfield.dart';
 import 'package:attendencesheet/widgets/text_field.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-import '../../../widgets/date_text_field.dart';
+import '../../../../widgets/date_text_field.dart';
 
 class AddExpenseReport extends StatelessWidget {
   AddExpenseReport({Key? key}) : super(key: key);
@@ -13,6 +16,7 @@ class AddExpenseReport extends StatelessWidget {
   final endDateController = TextEditingController();
   final descriptionController = TextEditingController();
   final currencyController = SingleValueDropDownController();
+  final reportNameController = TextEditingController();
 
 
   @override
@@ -53,7 +57,7 @@ class AddExpenseReport extends StatelessWidget {
                 fontSize: 14,
                 color: Colors.grey,
                 fontWeight: FontWeight.w900),),
-            DateTextField(dateController: startDateController),
+            DateTextField(dateController: endDateController),
             const SizedBox(height: 10,),
             ///Description
             const Text("DESCRIPTION", style: TextStyle(
@@ -77,11 +81,26 @@ class AddExpenseReport extends StatelessWidget {
                 DropDownValueModel(name: 'JPY', value: 'JPY'),
               ],
               hintText: "Select Type",),
+            const SizedBox(height: 10,),
+            ///Report Name
+            const Text("REPORT NAME", style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+                fontWeight: FontWeight.w900),),
+            TextFielD(hintText: "Enter Report Name", controller: reportNameController, textInputType: TextInputType.text,),
+
             const Spacer(),
             SizedBox(
               height: 50,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Get.to(ExpenseReportSummary(
+                      startDate: startDateController.text,
+                      endDate: endDateController.text,
+                      projectName: projectController.dropDownValue!.value,
+                      description: descriptionController.text,
+                      reportName: reportNameController.text));
+                },
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(

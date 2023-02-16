@@ -92,24 +92,7 @@ class ApiService{
       return employeeLeaveModel;
     }
     else if(response.statusCode == 203){
-      // employeeLeaveModel = EmployeeLeaveModel1(
-      //     type: "Debit",
-      //     approverMidName: "",
-      //     approverId: "",
-      //     leaveDate: DateTime.now(),
-      //     leaveCount: "",
-      //     id: "",
-      //     employeeFirstName: "",
-      //     employeeMidName: "",
-      //     comments: "",
-      //     employeeNumber: "",
-      //     leaveType: "",
-      //     status: "1234567890",
-      //     approverFirstName: "",
-      //     approverLastName: "",
-      //     financialYearId: "",
-      //     employeeLastName: ""
-      // );
+
       employeeLeaveModel = EmployeeLeaveModel1(
           type: "",
           approverMidName: "",
