@@ -23,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Map> User = [];
+  List<Map> user = [];
 
   String firstName = "";
   String lastName = "";
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ReportingManagerController reportingManagerController = Get.put(ReportingManagerController());
 
   Future<List<Map>> getData() async {
-    User.clear();
+    user.clear();
     http.Response response = await http.post(
         Uri.parse(
             'https://devxnet.cubastion.net/api/v1/employee/queryEmployee'),
@@ -42,11 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
       firstName = data['SiebelMessage']['Employee']["Reporting Manager First Name"];
       lastName = data['SiebelMessage']['Employee']["Reporting Manager Last Name"];
       for (Map i in datas) {
-        User.add(i);
+        user.add(i);
       }
-      return User;
+      return user;
     } else {
-      return User;
+      return user;
     }
   }
 
@@ -98,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 FutureBuilder(
                     future: getData(),
                     builder: (context, snapshot) {
-                      print(firstName);
                       reportingManagerController.reportingManagerFirstName.value = firstName;
                       reportingManagerController.reporintManagerLastName.value = lastName;
                       if (snapshot.hasData) {
@@ -108,12 +107,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             width:double.infinity,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: User.length,
+                                itemCount: user.length,
                                 reverse: true,
                                 itemBuilder: (context, index) {
                                   double hour = 0;
-                                  List<dynamic> Timesheet = User[index]['CUBN Timesheet'];
-                                  if (Timesheet.length == 0) {
+                                  List<dynamic> Timesheet = user[index]['CUBN Timesheet'];
+                                  if (Timesheet.isEmpty) {
                                     hour = 0;
                                   }
                                   else {
@@ -131,19 +130,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                             MaterialPageRoute(
                                                 builder: (BuildContext context) => CardScreen(
                                                   datess: DateFormat('d MMM').format(
-                                                      DateFormat('MM/dd/y').parse(User[index]
+                                                      DateFormat('MM/dd/y').parse(user[index]
                                                       ['Attendance Date'])),
                                                   week: DateFormat('EEEE').format(
-                                                      DateFormat('MM/dd/y').parse(User[index]
+                                                      DateFormat('MM/dd/y').parse(user[index]
                                                       ['Attendance Date'])),
-                                                  inTime: User[index]
+                                                  inTime: user[index]
                                                   ['Start Time']
                                                       .toString(),
-                                                  OutTime: User[index]['End Time'].toString(),
+                                                  outTime: user[index]['End Time'].toString(),
                                                   indx: index,
-                                                  date: User[index]['Attendance Date'],
+                                                  date: user[index]['Attendance Date'],
                                                   hour:hour.toString(),
-                                                  User4:User[index]["CUBN Timesheet"],
+                                                  user4:user[index]["CUBN Timesheet"],
                                                 ))).then((value){
                                           getData();
                                           setState(() {
@@ -171,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         DateFormat('d MMM')
                                                             .format(DateFormat(
                                                             'MM/dd/y')
-                                                            .parse(User[index]
+                                                            .parse(user[index]
                                                         [
                                                         'Attendance Date'])),
                                                         style: Ktextstylecarddate)
@@ -180,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     Text(
                                                         DateFormat('EEEE').format(
                                                             DateFormat('MM/dd/y')
-                                                                .parse(User[index]
+                                                                .parse(user[index]
                                                             [
                                                             'Attendance Date'])),
                                                         style: Ktextstylecardweek)
@@ -193,13 +192,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
-                                                    children: [
-                                                      const Text('IN TIME',
+                                                    children: const [
+                                                      Text('IN TIME',
                                                           style:
                                                           KtextstylecardIN),
-                                                      const Icon(Icons.arrow_right_alt,
-                                                          color: Colors.green),
-                                                      const Text(
+                                                      Icon(Icons.arrow_right_alt,
+                                                         color: Colors.green),
+                                                      Text(
                                                         'OUT TIME',
                                                         style: KtextstylecardIN,
                                                       )
@@ -211,13 +210,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .spaceBetween,
                                                     children: [
                                                       Text(
-                                                          User[index]
+                                                          user[index]
                                                           ['Start Time']
                                                               .toString(),
                                                           style:
                                                           KtextstylecardIN),
                                                       Text(
-                                                        User[index]['End Time']
+                                                        user[index]['End Time']
                                                             .toString(),
                                                         style: KtextstylecardIN,
                                                       )
@@ -261,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ///sitemap
           Padding(
             padding:  const EdgeInsets.symmetric(horizontal:10,vertical: 10 ),
-            child: Row(children: [const Text('SITE MAP', style: Ktextstyledaily)]),
+            child: Row(children: const [ Text('SITE MAP', style: Ktextstyledaily)]),
           ),
           ///sitemap cards
            Padding(

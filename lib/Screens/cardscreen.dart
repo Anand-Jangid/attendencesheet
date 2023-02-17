@@ -7,25 +7,25 @@ import '../models/usermodel.dart';
 
 class CardScreen extends StatefulWidget {
   static const id = 'card_screen';
-  CardScreen(
-      {required this.datess,
+  const CardScreen(
+      {super.key, required this.datess,
         required this.week,
         required this.inTime,
-        required this.OutTime,
+        required this.outTime,
         required this.indx,
         required this.date,
         required this.hour,
-        required this.User4,
+        required this.user4,
 
       });
   final String datess;
   final String week;
   final String inTime;
-  final String OutTime;
+  final String outTime;
   final int indx;
   final String date;
   final String hour;
-  final List User4;
+  final List user4;
 
 
 
@@ -36,7 +36,7 @@ class CardScreen extends StatefulWidget {
 
 class _CardScreenState extends State<CardScreen> {
 
-  List User2=[];
+  List user2=[];
 
   void addElementsToTimeSheet(List<String> object){
     ///List object = [projectName, projectDescription, projectDuration,attendance date]
@@ -47,7 +47,7 @@ class _CardScreenState extends State<CardScreen> {
       "Attendance Date" :object[3],
     };
     setState(() {
-      User2.add(newObject);
+      user2.add(newObject);
     });
   }
 
@@ -76,7 +76,7 @@ class _CardScreenState extends State<CardScreen> {
   @override
   Widget build(BuildContext context) {
     ApiService apiService=ApiService();
-    User2=widget.User4;
+    user2=widget.user4;
     return Scaffold(
         appBar: AppBar(
           leading: BackButton(color: Colors.grey,
@@ -84,10 +84,10 @@ class _CardScreenState extends State<CardScreen> {
         Navigator.pop(context);
         },
           ),
-          title: Text('ATTENDANCE', style: Ktextstyledaily),
+          title: const Text('ATTENDANCE', style: Ktextstyledaily),
         ),
         body: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
 
           child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,15 +112,15 @@ class _CardScreenState extends State<CardScreen> {
                       Column(
                         children: [
                           Text(widget.hour , style: Ktextstylecarddate3),
-                          Text('OF ACTIVITY', style: Ktextstylecarddate)
+                          const Text('OF ACTIVITY', style: Ktextstylecarddate)
                         ],
                       )
                     ],
                   ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     Row(children: [
                       Expanded(
-                        child: Container(
+                        child: SizedBox(
                             height: 55.0,
                             child: Card(
                               child: Center(
@@ -131,12 +131,12 @@ class _CardScreenState extends State<CardScreen> {
                             )),
                       ),
                       Expanded(
-                        child: Container(
+                        child: SizedBox(
                             height: 55.0,
                             child: Card(
                               child: Center(
                                   child: Text(
-                                    'Out Time ${widget.OutTime}',
+                                    'Out Time ${widget.outTime}',
                                     style: Ktextstylecarddate,
                                   )),
                             )),
@@ -147,14 +147,14 @@ class _CardScreenState extends State<CardScreen> {
                   ListView.builder(
                       shrinkWrap: true,
                       scrollDirection:Axis.vertical,
-                      itemCount: User2.length,
+                      itemCount: user2.length,
                       itemBuilder: (context, index) {
                         return ProjectActivityWidget(
                           date: widget.date,
-                          projectName: User2[index]["Project Name"],
-                          projectDescription: User2[index]["Description"],
-                          projectDuration: User2[index]["Number of Hours"],
-                          Updatelist: User2,
+                          projectName: user2[index]["Project Name"],
+                          projectDescription: user2[index]["Description"],
+                          projectDuration: user2[index]["Number of Hours"],
+                          Updatelist: user2,
                           UpdateF: (object,projects){
                             updateElementsToTimeSheet(object, projects);
                           },
@@ -180,7 +180,7 @@ class _CardScreenState extends State<CardScreen> {
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           ProjectActivity(
-                                            projects:User2,
+                                            projects:user2,
                                             indx: widget.indx,
                                             date:widget.date,
                                             addFunction:(List<String> object){
@@ -188,7 +188,7 @@ class _CardScreenState extends State<CardScreen> {
                                           },
                                           )));
                             },
-                            child: Card(
+                            child: const Card(
                                 color: Colors.grey,
                                 child: Center(
                                     child: Text(
@@ -202,16 +202,15 @@ class _CardScreenState extends State<CardScreen> {
                           height: 60,
                           child: GestureDetector(
                             onTap: () async{
-                              print('this is${User2}');
 
-                              for(int i=0; i<User2.length; i++){
+                              for(int i=0; i<user2.length; i++){
 
-                               UserModel user = await apiService.getData5( User2[i]["Description"], User2[i]["Number of Hours"],User2[i]["Project Name"], User2[i]["Attendance Date"]);
+                               UserModel user = await apiService.getData5( user2[i]["Description"], user2[i]["Number of Hours"],user2[i]["Project Name"], user2[i]["Attendance Date"]);
                                        }
 
                                      Navigator.pop(context);
                             },
-                            child: Card(
+                            child: const Card(
                                 color: Colors.orangeAccent,
                                 child: Center(
                                     child: Text('Submit',

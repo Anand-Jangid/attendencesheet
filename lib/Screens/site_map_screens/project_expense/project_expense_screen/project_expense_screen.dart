@@ -1,4 +1,6 @@
 import 'package:attendencesheet/Screens/site_map_screens/project_expense/project_expense_screen/add_expense_screen.dart';
+import 'package:attendencesheet/Screens/site_map_screens/project_expense/project_expense_screen/edit_expense_screen.dart';
+import 'package:attendencesheet/models/add_expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../controllers/employee_expense_controller.dart';
@@ -13,7 +15,6 @@ class ProjectExpenseScreen extends StatefulWidget {
 
 class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
   final employeeExpenseController = Get.put(EmployeeExpenseController());
-
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +34,28 @@ class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
                 else{
                   return ListView.builder(
                       itemCount: employeeExpenseController.expensesList.length,
-                      itemBuilder: (context, index){
-
-                        return InkWell(
-                          onTap: () => Get.to(() => AddExpenseScreen()),
-                          child: PeojectExpenseWidget(
-                            expenseAmount: employeeExpenseController.expensesList[index]["Expense Amount"],
-                            expenseDate: employeeExpenseController.expensesList[index]["Expense Date"],
-                            expenseDescription: employeeExpenseController.expensesList[index]["Expense Description"],
-                            expenseType: employeeExpenseController.expensesList[index]["Expense Type"],
-                            projectName: employeeExpenseController.expensesList[index]["Project Name"],
+                      itemBuilder: (context, index)=> InkWell(
+                          onTap: () {
+                            Get.to(() => EditExpenseScreen(addExpenseModel: AddExpenseModel(
+                              date: employeeExpenseController.expensesList[index]["Expense Date"],
+                              projectName: employeeExpenseController.expensesList[index]["Project Name"],
+                              expenseType: employeeExpenseController.expensesList[index]["Expense Type"],
+                              expenseDescription: employeeExpenseController.expensesList[index]["Expense Description"],
+                              projectAmount: employeeExpenseController.expensesList[index]["Expense Amount"],
+                              projectInvoice: employeeExpenseController.expensesList[index]["Voucher #"],
+                              attachment: employeeExpenseController.expensesList[index]["attachment"]
+                            ),));
+                          },
+                          child: IgnorePointer(
+                            child: PeojectExpenseWidget(
+                              expenseAmount: employeeExpenseController.expensesList[index]["Expense Amount"],
+                              expenseDate: employeeExpenseController.expensesList[index]["Expense Date"],
+                              expenseDescription: employeeExpenseController.expensesList[index]["Expense Description"],
+                              expenseType: employeeExpenseController.expensesList[index]["Expense Type"],
+                              projectName: employeeExpenseController.expensesList[index]["Project Name"],
+                            ),
                           ),
-                        );
-                      });
+                        ));
                 }
               }),
             ),

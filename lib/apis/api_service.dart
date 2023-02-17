@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:attendencesheet/controllers/submit_project_expense_controller.dart';
 import 'package:attendencesheet/models/add_project_expense_model.dart';
 import 'package:attendencesheet/models/leave_approval_model.dart';
@@ -203,11 +205,9 @@ class ApiService{
     );
     if(response.statusCode == 200){
       var jsonResponse = jsonDecode(response.body);
-      print(response.statusCode);
       leaveApprovalModel = LeaveApprovalModel.fromJson(jsonResponse);
     }
     var jsonResponse = jsonDecode(response.body);
-    print(response.statusCode);
     leaveApprovalModel = LeaveApprovalModel.fromJson(jsonResponse);
     return leaveApprovalModel;
   }
@@ -248,8 +248,6 @@ class ApiService{
       return leavesList;
     }
     else{
-      print(response.body);
-      print(response.statusCode);
       throw Exception("Status code is not 200");
     }
 
@@ -295,23 +293,31 @@ class ApiService{
 
   //adding project expense
   static Future getFile() async{
-    final pickedFile1 = await FilePicker.platform.pickFiles();
-    if(pickedFile1 != null){
-      var filePath = pickedFile1.paths.first!;
-      return filePath;
-    }else{
-      print("No image selected");
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+    if (result != null) {
+      List<File> files = result.paths.map((path) => File(path!)).toList();
+      return files;
+    } else {
+      // User canceled the picker
     }
   }
 
   //adding project expense
-  static Future<void> uploadImage(String voucher, String voucherDate,String expenseType, String amount, String description, String projectId, String filePath) async{
-    //AddProjectExpenseModel? addProjectExpenseModel;
+  static Future<void> uploadImage({required String voucher,
+        required String voucherDate,
+        required String expenseType,
+        required String amount,
+        required String description,
+        required String projectId,
+        required List filePaths}) async{
+
     submitProjectExpenseController.showSpinner.value = true;
     var headers = {
       'token': tokens
     };
-    var request = http.MultipartRequest('POST', Uri.parse('https://devxnet.cubastion.net/api/v1/expenses/upsertExpense'));
+    var request = http.MultipartRequest('POST', Uri.parse('$baseURL/expenses/upsertExpense'));
     request.fields.addAll({
       'voucher': voucher,
       'voucherDate': voucherDate,
@@ -321,19 +327,16 @@ class ApiService{
       'description': description,
       'projectId': projectId
     });
-    request.files.add(await http.MultipartFile.fromPath('xnetFiles', filePath));
+    for(int i=0; i< filePaths.length; i++){
+      request.files.add(await http.MultipartFile.fromPath('xnetFiles', filePaths[i].path));
+    }
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       submitProjectExpenseController.showSpinner.value = false;
-      //addProjectExpenseModel = addProjectExpenseModelFromJson(await response.stream.bytesToString());
-      print(await response.stream.bytesToString());
-      print("image has been uploaded");
-      // return addProjectExpenseModel;
     }
     else {
       submitProjectExpenseController.showSpinner.value = false;
-      print(response.reasonPhrase);
       throw Exception("image is not uploaded");
     }
 

@@ -82,11 +82,11 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                             datess:DateFormat('d MMM').format(DateFormat('MM/dd/y').parse(Users[index]['Attendance Date'])) ,
                                             week:DateFormat('EEEE').format(DateFormat('MM/dd/y').parse(Users[index]['Attendance Date'])) ,
                                             inTime:Users[index]['Start Time'].toString(),
-                                            OutTime:Users[index]['End Time'].toString(),
+                                            outTime:Users[index]['End Time'].toString(),
                                             indx:index,
                                             date:Users[index]['Attendance Date'],
                                             hour:hour1.toString(),
-                                            User4: Users[index]['CUBN Timesheet'],
+                                            user4: Users[index]['CUBN Timesheet'],
 
                                           ))).then((value) {
                                             getData2();

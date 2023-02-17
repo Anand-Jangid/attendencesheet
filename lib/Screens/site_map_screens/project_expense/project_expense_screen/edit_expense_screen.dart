@@ -15,23 +15,24 @@ import '../../../../models/add_expense_model.dart';
 import '../../../../widgets/drop_down_textfield.dart';
 import 'package:path/path.dart';
 
-class AddExpenseScreen extends StatefulWidget {
+class EditExpenseScreen extends StatefulWidget {
+  final AddExpenseModel addExpenseModel;
 
-  AddExpenseScreen({Key? key, }) : super(key: key);
+  EditExpenseScreen({Key? key, required this.addExpenseModel}) : super(key: key);
 
   @override
-  State<AddExpenseScreen> createState() => _AddExpenseScreenState();
+  State<EditExpenseScreen> createState() => _EditExpenseScreenState();
 }
 
-class _AddExpenseScreenState extends State<AddExpenseScreen> {
+class _EditExpenseScreenState extends State<EditExpenseScreen> {
 
-  final amountController = TextEditingController();
-  final invoiceController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final dateController = TextEditingController();
-  final typeController = SingleValueDropDownController();
-  final projectController = SingleValueDropDownController();
-  final imagePickerController = Get.put(ImagePickercontroller());
+  late final amountController = TextEditingController(text: widget.addExpenseModel.projectAmount);
+  late final invoiceController = TextEditingController(text: widget.addExpenseModel.projectInvoice);
+  late final descriptionController = TextEditingController(text: widget.addExpenseModel.expenseDescription);
+  late final dateController = TextEditingController(text: widget.addExpenseModel.date);
+  late final typeController = SingleValueDropDownController(data: DropDownValueModel(name: widget.addExpenseModel.expenseType, value:  widget.addExpenseModel.expenseType));
+  late final projectController = SingleValueDropDownController(data: DropDownValueModel(name: widget.addExpenseModel.projectName, value:  widget.addExpenseModel.projectName));
+  late final imagePickerController = Get.put(ImagePickercontroller());
   bool loadingData = false;
 
   final submitProjectExpenseController = Get.put(SubmitProjectExpenseController());
@@ -54,9 +55,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               controller: projectController,
               dropDownList: const [
                 DropDownValueModel(name: 'Web Dev', value: '7bz72xg15b50t2z'),
-                DropDownValueModel(
-                    name: "Cubastion Consulting Private Limited",
-                    value: "mxbyyp9xqhazhwk"),
+                DropDownValueModel(name: "Cubastion Consulting Private Limited", value: "mxbyyp9xqhazhwk"),
               ],
               hintText: "Select Project",
             ),
@@ -231,46 +230,33 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             ),
 
             ///asset icon
-            Obx(() {
-              return (imagePickerController.filePathList.isNotEmpty)
-                  ?
-              Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: imagePickerController.filePathList.length,
-                  itemBuilder: (context, index){
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            // Obx(() {
+            //   return (imagePickerController.imagePicked.value)
+            //       ?
+            //
+            //       :
+            //   Container();
+            // }),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: widget.addExpenseModel.attachment.length,
+                itemBuilder: (context, index){
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Flexible(
                       child: Column(
                         children: [
-                          Stack(
-                            children: [
-                              Image.asset(
-                                "asset/images/gallary_image.png",
-                                height: 60,
-                                width: 60,
-                              ),
-                              Positioned(
-                                top: -15,
-                                right: -15,
-                                child: IconButton(
-                                  onPressed: () {
-                                    imagePickerController.filePathList.removeAt(index);
-                                  },
-                                  icon: const Icon(
-                                    Icons.remove_circle,
-                                    color: Colors.grey,
-                                  ),
-                                  iconSize: 20,
-                                ),
-                              )
-                            ],
+                          Image.asset(
+                            "asset/images/gallary_image.png",
+                            height: 60,
+                            width: 60,
                           ),
                           SizedBox(
                             width: 70,
                             child: Center(
-                              child: Text(basename(imagePickerController.filePathList[index].path),
+                              child: Text(widget.addExpenseModel.attachment[index]["name"],
                                 maxLines: 5,
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
@@ -279,13 +265,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           ),
                         ],
                       ),
-                    );
-                  },
-                ),
-              )
-                  :
-              Container();
-            }),
+                    ),
+                  );
+                },
+              ),
+            ),
             const Spacer(),
 
             Row(children: [
@@ -302,9 +286,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             color: Colors.grey,
                             child: Center(
                                 child: Text(
-                              'Cancel',
-                              style: Ktextstylecardbutton,
-                            ))),
+                                  'Cancel',
+                                  style: Ktextstylecardbutton,
+                                ))),
                       ))),
 
               ///submit
@@ -333,9 +317,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           child: (submitProjectExpenseController.showSpinner.value)
                               ? const Center(child: CircularProgressIndicator())
                               : const Card(
-                                  color: Colors.orangeAccent,
-                                  child: Center(
-                                      child: Text(
+                              color: Colors.orangeAccent,
+                              child: Center(
+                                  child: Text(
                                     'SUBMIT',
                                     style: Ktextstylecardbutton,
                                   ))));
