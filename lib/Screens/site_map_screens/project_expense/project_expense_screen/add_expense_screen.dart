@@ -43,14 +43,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("ADD EXPENSE"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DropDownTextFielD(
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48.0),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: DropDownTextFielD(
               controller: projectController,
               dropDownList: const [
                 DropDownValueModel(name: 'Web Dev', value: '7bz72xg15b50t2z'),
@@ -60,6 +57,17 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               ],
               hintText: "Select Project",
             ),
+          ),
+        ),
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
             const SizedBox(
               height: 10,
             ),
