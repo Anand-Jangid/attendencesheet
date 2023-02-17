@@ -195,8 +195,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             child: const Text("Use Camera")),
                         TextButton(
                             onPressed: () async {
+                              print("0");
                               await imagePickerController.getFiles();
-                              //imagePickerController.imagePicked.value = true;
+                              print("8");
                               Get.back();
                             },
                             child: (loadingData)
