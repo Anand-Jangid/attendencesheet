@@ -21,6 +21,9 @@ class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("PEOJECT EXPENSE", style: TextStyle(color: Colors.black),),
+        leading: const BackButton(
+            color: Colors.black
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

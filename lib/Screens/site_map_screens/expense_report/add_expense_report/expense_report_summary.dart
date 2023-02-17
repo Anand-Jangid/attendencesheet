@@ -99,6 +99,9 @@ class _ExpenseReportSummaryState extends State<ExpenseReportSummary> {
             ),
           ),
         ),
+        leading: const BackButton(
+            color: Colors.black
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -25,6 +25,9 @@ class AddExpenseReport extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("EXPENSE REPORT"),
+        leading: const BackButton(
+            color: Colors.black
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -38,18 +38,18 @@ class _SalaryScreenState extends State<SalaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(color:Colors.grey),
-        title: Text('SALARY DETAILS', style: Ktextstylecarddates),
+        leading: const BackButton(color:Colors.grey),
+        title: const Text('SALARY DETAILS', style: Ktextstylecarddates),
       ),
       body: Padding(
-          padding: EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
                  FutureBuilder(
                     future: getData3(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return Text('Loading');
+                        return const Text('Loading');
                       } else {
                         return Flexible(
                           child: ListView.builder(
@@ -64,7 +64,7 @@ class _SalaryScreenState extends State<SalaryScreen> {
                                         height: 105.0,
                                         child: Card(
                                           child: Padding(
-                                            padding: EdgeInsets.all(12.0),
+                                            padding: const EdgeInsets.all(12.0),
                                             child: Column(children: [
                                               Row(
                                                 mainAxisAlignment:
@@ -81,12 +81,12 @@ class _SalaryScreenState extends State<SalaryScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 10.0),
+                                              const SizedBox(height: 10.0),
                                               Row(
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.keyboard_arrow_down,
                                                     size: 30,
                                                     color:Colors.grey,

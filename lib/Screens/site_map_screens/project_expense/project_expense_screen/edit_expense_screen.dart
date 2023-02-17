@@ -43,20 +43,29 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("ADD EXPENSE"),
+        title: const Text("ADD EXPENSE", style: TextStyle(color: Colors.black),),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48.0),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: DropDownTextFielD(
-              controller: projectController,
-              dropDownList: const [
-                DropDownValueModel(name: 'Web Dev', value: '7bz72xg15b50t2z'),
-                DropDownValueModel(name: "Cubastion Consulting Private Limited", value: "mxbyyp9xqhazhwk"),
-              ],
-              hintText: "Select Project",
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: DropDownTextFielD(
+                controller: projectController,
+                dropDownList: const [
+                  DropDownValueModel(name: 'Web Dev', value: '7bz72xg15b50t2z'),
+                  DropDownValueModel(name: "Cubastion Consulting Private Limited", value: "mxbyyp9xqhazhwk"),
+                ],
+                hintText: "Select Project",
+              ),
             ),
           ),
+        ),
+        leading: BackButton(
+            color: Colors.black
         ),
       ),
       body: Padding(
