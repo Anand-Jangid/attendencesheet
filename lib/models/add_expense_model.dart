@@ -5,6 +5,7 @@ class AddExpenseModel{
   final String expenseDescription;
   final String expenseType;
   final String date;
+  final String Id;
   final List attachment;
 
   AddExpenseModel({
@@ -14,6 +15,7 @@ class AddExpenseModel{
     required this.expenseDescription,
     required this.projectAmount,
     required this.projectInvoice,
+    required this.Id,
     required this.attachment
 });
 }

@@ -385,4 +385,42 @@ class ApiService{
     }
 
   }
+
+  /// updating projectExpense
+  static Future updateExpense({
+  required String invoice,
+    required String date,
+    required String type,
+    required String amount,
+    required String description,
+    required String Id,}) async{
+
+    submitProjectExpenseController.showSpinner.value = true;
+    var headers = {
+      'token': tokens
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('$baseURL/expenses/upsertExpense'));
+    request.fields.addAll({
+      'voucher': invoice,
+      'voucherDate': date,
+      'expenseType': type,
+      'currency': 'INR',
+      'amount': amount,
+      'description': description,
+      'Id': Id,
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      submitProjectExpenseController.showSpinner.value = false;
+      print(await response.stream.bytesToString());
+    }
+    else {
+      submitProjectExpenseController.showSpinner.value = false;
+      print(response.reasonPhrase);
+    }
+  }
 }

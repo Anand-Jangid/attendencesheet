@@ -43,8 +43,13 @@ class _ProjectExpenseScreenState extends State<ProjectExpenseScreen> {
                               expenseDescription: employeeExpenseController.expensesList[index]["Expense Description"],
                               projectAmount: employeeExpenseController.expensesList[index]["Expense Amount"],
                               projectInvoice: employeeExpenseController.expensesList[index]["Voucher #"],
-                              attachment: employeeExpenseController.expensesList[index]["attachment"]
-                            ),));
+                              attachment: employeeExpenseController.expensesList[index]["attachment"],
+                              Id: employeeExpenseController.expensesList[index]["Id"],
+                            ),))!.then((value) {
+                              employeeExpenseController.fetchExpenseData();
+                              setState(() {
+                              });
+                            });
                           },
                           child: IgnorePointer(
                             child: PeojectExpenseWidget(

@@ -185,32 +185,30 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
             ),
             InkWell(
               onTap: () {
-                Get.defaultDialog(
-                    title: "Add Attachment",
-                    content: Column(
-                      children: [
-                        TextButton(
-                            onPressed: () {},
-                            child: const Text("Use Camera")),
-                        TextButton(
-                            onPressed: () async {
-                              await imagePickerController.getFiles();
-                              //imagePickerController.imagePicked.value = true;
-                              Get.back();
-                            },
-                            child: (loadingData)
-                                ? const Center(
-                                child: CircularProgressIndicator())
-                                : const Text("Pick From Device")),
-                        TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: const Text("Cancel")),
-                      ],
-                    ));
-                // showDialogOpt(context);
-
+                // Get.defaultDialog(
+                //     title: "Add Attachment",
+                //     content: Column(
+                //       children: [
+                //         TextButton(
+                //             onPressed: () {},
+                //             child: const Text("Use Camera")),
+                //         TextButton(
+                //             onPressed: () async {
+                //               await imagePickerController.getFiles();
+                //               //imagePickerController.imagePicked.value = true;
+                //               Get.back();
+                //             },
+                //             child: (loadingData)
+                //                 ? const Center(
+                //                 child: CircularProgressIndicator())
+                //                 : const Text("Pick From Device")),
+                //         TextButton(
+                //             onPressed: () {
+                //               Get.back();
+                //             },
+                //             child: const Text("Cancel")),
+                //       ],
+                //     ));
               },
               child: Container(
                 height: 45,
@@ -230,13 +228,7 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
             ),
 
             ///asset icon
-            // Obx(() {
-            //   return (imagePickerController.imagePicked.value)
-            //       ?
-            //
-            //       :
-            //   Container();
-            // }),
+
             Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -299,20 +291,14 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
                     child: Obx(() {
                       return GestureDetector(
                           onTap: () async {
-                            if (imagePickerController.filePathList.isNotEmpty) {
-                              await ApiService.uploadImage(
-                                amount: amountController.text,
-                                description: descriptionController.text,
-                                expenseType: typeController.dropDownValue!.value.toString(),
-                                filePaths: imagePickerController.filePathList.value,
-                                projectId: projectController.dropDownValue!.value.toString(),
-                                voucher : invoiceController.text,
-                                voucherDate: dateController.text,
-                              );
-                              Get.back();
-                            } else {
-                              Get.snackbar("Unable to submit", "You cannot submit without an attachment");
-                            }
+                            await ApiService.updateExpense(
+                                  invoice: invoiceController.text,
+                                  date: dateController.text,
+                                  type: typeController.dropDownValue!.value,
+                                  amount: amountController.text,
+                                  description: descriptionController.text,
+                                  Id: widget.addExpenseModel.Id);
+                            Get.back();
                           },
                           child: (submitProjectExpenseController.showSpinner.value)
                               ? const Center(child: CircularProgressIndicator())
