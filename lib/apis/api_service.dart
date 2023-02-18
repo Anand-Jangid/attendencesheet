@@ -14,6 +14,21 @@ import '../models/usermodel.dart';
 
 class ApiService{
 
+  /// query Employee
+  static Future<Map> queryEmployee() async {
+    http.Response response = await http.post(
+        Uri.parse(
+            '$baseURL/employee/queryEmployee'),
+        headers: {'token': tokens});
+    var data = jsonDecode(response.body.toString());
+    var datas = data['SiebelMessage']['Employee'];
+    if (response.statusCode == 200) {
+      return datas;
+    } else {
+      throw Exception("Query Employee API--Status code is not 200. \n Status code is ${response.statusCode}");
+    }
+  }
+
   static final SubmitProjectExpenseController submitProjectExpenseController = Get.find();
 
   static void updatedList(List<PendingLeaveApprovalModel1> users){
