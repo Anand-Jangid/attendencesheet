@@ -25,37 +25,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Map> user = [];
 
-  String firstName = "";
-  String lastName = "";
 
   final queryEmployeeController = Get.put(QueryEmployeeController());
+  final ReportingManagerController reportingManagerController = Get.put(ReportingManagerController());
 
-  final ReportingManagerController reportingManagerController = Get.put(
-      ReportingManagerController());
-
-  Future<List<Map>> getData() async {
-    user.clear();
-    http.Response response = await http.post(
-        Uri.parse(
-            'https://devxnet.cubastion.net/api/v1/employee/queryEmployee'),
-        headers: {'token': tokens});
-    var data = jsonDecode(response.body.toString());
-    var datas = data['SiebelMessage']['Employee']['CUBN Attendance'];
-    if (response.statusCode == 200) {
-      firstName =
-      data['SiebelMessage']['Employee']["Reporting Manager First Name"];
-      lastName =
-      data['SiebelMessage']['Employee']["Reporting Manager Last Name"];
-      for (Map i in datas) {
-        user.add(i);
-      }
-      return user;
-    } else {
-      return user;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,174 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(bottom: 15),
             child: Column(
               children: [
-                // FutureBuilder(
-                //     future: getData(),
-                //     builder: (context, snapshot) {
-                //       reportingManagerController.reportingManagerFirstName.value = firstName;
-                //       reportingManagerController.reporintManagerLastName.value = lastName;
-                //       if (snapshot.hasData) {
-                //         if (snapshot.connectionState == ConnectionState.done) {
-                //           return SizedBox(
-                //             height: MediaQuery.of(context).size.height / 5,
-                //             width: double.infinity,
-                //             child: ListView.builder(
-                //                 scrollDirection: Axis.horizontal,
-                //                 itemCount: user.length,
-                //                 reverse: true,
-                //                 itemBuilder: (context, index) {
-                //                   double hour = 0;
-                //                   List<dynamic> Timesheet = user[index]['CUBN Timesheet'];
-                //                   if (Timesheet.isEmpty) {
-                //                     hour = 0;
-                //                   }
-                //                   else {
-                //                     for (int i = 0; i < Timesheet.length; i++) {
-                //                       hour = hour + double.parse(Timesheet[i]["Number of Hours"]);
-                //                     }
-                //                   }
-                //                   return SizedBox(
-                //                     height: 190,
-                //                     width: 190,
-                //                     child: GestureDetector(
-                //                       onTap: () {
-                //                         Navigator.push(
-                //                             context,
-                //                             MaterialPageRoute(builder: (
-                //                                     BuildContext context) =>
-                //                                     CardScreen(
-                //                                       datess: DateFormat(
-                //                                           'd MMM').format(
-                //                                           DateFormat('MM/dd/y')
-                //                                               .parse(user[index]
-                //                                           ['Attendance Date'])),
-                //                                       week: DateFormat('EEEE')
-                //                                           .format(
-                //                                           DateFormat('MM/dd/y')
-                //                                               .parse(user[index]
-                //                                           ['Attendance Date'])),
-                //                                       inTime: user[index]
-                //                                       ['Start Time']
-                //                                           .toString(),
-                //                                       outTime: user[index]['End Time']
-                //                                           .toString(),
-                //                                       indx: index,
-                //                                       date: user[index]['Attendance Date'],
-                //                                       hour: hour.toString(),
-                //                                       user4: user[index]["CUBN Timesheet"],
-                //                                     ))).then((value) {
-                //                           getData();
-                //                           setState(() {
-                //                             //refresh hoja
-                //                           });
-                //                         });
-                //                       },
-                //                       // child: Card(
-                //                       //   elevation: 2,
-                //                       //   shape: RoundedRectangleBorder(
-                //                       //       borderRadius:
-                //                       //       BorderRadius.circular(10.0)),
-                //                       //   child: Padding(
-                //                       //     padding: const EdgeInsets.all(20.0),
-                //                       //     child: Column(
-                //                       //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //                       //       crossAxisAlignment: CrossAxisAlignment.start,
-                //                       //       children: [
-                //                       //         Column(
-                //                       //           children: [
-                //                       //             Row(children: [
-                //                       //               Text(
-                //                       //                   DateFormat('d MMM').format(DateFormat('MM/dd/y').parse(user[index]['Attendance Date'])),
-                //                       //                   style: Ktextstylecarddate)
-                //                       //             ]),
-                //                       //             Row(children: [
-                //                       //               Text(DateFormat('EEEE').format(
-                //                       //                       DateFormat('MM/dd/y').parse(user[index]['Attendance Date'])),
-                //                       //                   style: Ktextstylecardweek)
-                //                       //             ])
-                //                       //           ],
-                //                       //         ),
-                //                       //         Column(
-                //                       //           children: [
-                //                       //             Row(
-                //                       //               mainAxisAlignment:
-                //                       //               MainAxisAlignment
-                //                       //                   .spaceBetween,
-                //                       //               children: const [
-                //                       //                 Text('IN TIME',
-                //                       //                     style:
-                //                       //                     KtextstylecardIN),
-                //                       //                 Icon(Icons.arrow_right_alt,
-                //                       //                    color: Colors.green),
-                //                       //                 Text(
-                //                       //                   'OUT TIME',
-                //                       //                   style: KtextstylecardIN,
-                //                       //                 )
-                //                       //               ],
-                //                       //             ),
-                //                       //             Row(
-                //                       //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //                       //               children: [
-                //                       //                 Text(
-                //                       //                     user[index]
-                //                       //                     ['Start Time']
-                //                       //                         .toString(),
-                //                       //                     style:
-                //                       //                     KtextstylecardIN),
-                //                       //                 Text(
-                //                       //                   user[index]['End Time']
-                //                       //                       .toString(),
-                //                       //                   style: KtextstylecardIN,
-                //                       //                 )
-                //                       //               ],
-                //                       //             ),
-                //                       //           ],
-                //                       //         ),
-                //                       //         Row(
-                //                       //           mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                //                       //           children: [
-                //                       //             SizedBox(
-                //                       //               height:25,
-                //                       //               child: ElevatedButton(
-                //                       //                   onPressed:(){}, child:Text('${hour.toString()} Hrs ',style:const TextStyle(fontSize:10 ),)
-                //                       //               ),
-                //                       //             ),
-                //                       //             const Text('of Activity',style:KtextstylecardIN),],
-                //                       //         )
-                //                       //
-                //                       //       ],
-                //                       //     ),
-                //                       //   ),
-                //                       // ),
-                //                       ///
-                //                       child: AttendanceCard(
-                //                         attendanceDate: user[index]['Attendance Date'],
-                //                         startTime: user[index]['Start Time'].toString(),
-                //                         endTime: user[index]['End Time'].toString(),
-                //                         hours: hour.toString(),
-                //                       ),
-                //                     ),
-                //                   );
-                //                 }),
-                //           );
-                //         }
-                //         return Container(height: 180,
-                //             child: const Center(
-                //                 child: CircularProgressIndicator()));
-                //       }
-                //       else {
-                //         return Container(
-                //             height: 180,
-                //             child: const Center(
-                //                 child: CircularProgressIndicator()));
-                //       }
-                //     }),
                 Obx(() {
                   return SizedBox(
                       height: MediaQuery.of(context).size.height / 5,
                       width: double.infinity,
                       child: (queryEmployeeController.isLoading == true) ?
                       const Center(child: CircularProgressIndicator()) :
-                      // Container(height: 20, color: Colors.red,)
                       ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: queryEmployeeController.attendanceList.length,
@@ -291,39 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 190,
                               width: 190,
                               child: GestureDetector(
-                                // onTap: () {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (
-                                //               BuildContext context) =>
-                                //               CardScreen(
-                                //                 datess: DateFormat(
-                                //                     'd MMM').format(
-                                //                     DateFormat('MM/dd/y')
-                                //                         .parse(user[index]
-                                //                     ['Attendance Date'])),
-                                //                 week: DateFormat('EEEE')
-                                //                     .format(
-                                //                     DateFormat('MM/dd/y')
-                                //                         .parse(user[index]
-                                //                     ['Attendance Date'])),
-                                //                 inTime: user[index]
-                                //                 ['Start Time']
-                                //                     .toString(),
-                                //                 outTime: user[index]['End Time']
-                                //                     .toString(),
-                                //                 indx: index,
-                                //                 date: user[index]['Attendance Date'],
-                                //                 hour: hour.toString(),
-                                //                 user4: user[index]["CUBN Timesheet"],
-                                //               ))).then((value) {
-                                //     getData();
-                                //     setState(() {
-                                //       //refresh hoja
-                                //     });
-                                //   });
-                                // },
+                                onTap: () => Get.to(CardScreen(index: index, hour: hour.toString())),
                                 child: AttendanceCard(
                                   attendanceDate: queryEmployeeController.attendanceList[index]["Attendance Date"],
                                   startTime: queryEmployeeController.attendanceList[index]["Start Time"],

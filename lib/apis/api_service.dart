@@ -35,8 +35,8 @@ class ApiService{
     users.sort((a, b) => b.leaveDate.compareTo(a.leaveDate));
   }
 
-  Future<UserModel> getData5(String description,String duration,String name,String date) async {
-    var body1=json.encode({
+  static Future<UserModel> upsertAttendance(String description,String duration,String name,String date) async {
+    var body=json.encode({
       "body": {
         "SiebelMessage": {
           "IntObjectFormat": "Siebel Hierarchical",
@@ -68,10 +68,16 @@ class ApiService{
     http.Response response = await http.post(
         Uri.parse('$baseURL/attendance/upsertAttendance'),
         headers: headers,
-        body: body1);
-    var jsonResponse = jsonDecode(response.body);
-    userModel = UserModel.fromJson(jsonResponse);
-    return userModel;
+        body: body);
+    if(response.statusCode == 200){
+      var jsonResponse = jsonDecode(response.body);
+      userModel = UserModel.fromJson(jsonResponse);
+      return userModel;
+    }
+    else{
+      print(response.body);
+      throw Exception("upsertAttendance API \n status code is not 200 \n status code is ${response.statusCode}");
+    }
   }
 
   /// API for applying leave

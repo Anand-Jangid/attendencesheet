@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import '../constants.dart';
-import '../Screens/updatescreen.dart';
+import '../Screens/project_activity_update.dart';
 
 class ProjectActivityWidget extends StatelessWidget {
   final String projectName;
   final String projectDescription;
   final String projectDuration;
-  final String date;
-  final List Updatelist;
-  final Function UpdateF;
-  const ProjectActivityWidget({Key? key, required this.date,required this.projectName, required this.projectDescription, required this.projectDuration,required this.Updatelist,required this.UpdateF}) : super(key: key);
+  // final String date;
+  // final List Updatelist;
+  // final Function UpdateF;
+  const ProjectActivityWidget({Key? key,
+    required this.projectName,
+    required this.projectDescription,
+    required this.projectDuration,
+    // required this.Updatelist,
+    // required this.UpdateF,
+    // required this.date,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProjectActivityUpdate(name: projectName, projectDescription: projectDescription, projectDuration: projectDuration, date: date,UpdateFunction:UpdateF,projects:Updatelist)));
-      },
+      // onTap: (){
+      //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProjectActivityUpdate(name: projectName, projectDescription: projectDescription, projectDuration: projectDuration, date: date,UpdateFunction:UpdateF,projects:Updatelist)));
+      // },
       child: Card(
         child: Padding(
           padding:EdgeInsets.all(7.0),
