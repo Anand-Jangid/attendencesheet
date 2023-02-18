@@ -1,4 +1,5 @@
 import 'package:attendencesheet/Screens/site_map_screens/expense_report/add_expense_report/expense_report_summary.dart';
+import 'package:attendencesheet/controllers/query_employee_controller.dart';
 import 'package:attendencesheet/widgets/drop_down_textfield.dart';
 import 'package:attendencesheet/widgets/text_field.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -8,23 +9,57 @@ import 'package:intl/intl.dart';
 
 import '../../../../widgets/date_text_field.dart';
 
-class AddExpenseReport extends StatelessWidget {
+class AddExpenseReport extends StatefulWidget {
   AddExpenseReport({Key? key}) : super(key: key);
 
+  @override
+  State<AddExpenseReport> createState() => _AddExpenseReportState();
+}
+
+class _AddExpenseReportState extends State<AddExpenseReport> {
+  final QueryEmployeeController queryEmployeeController = Get.find();
+
   final projectController = SingleValueDropDownController();
+
   final startDateController = TextEditingController();
+
   final endDateController = TextEditingController();
+
   final descriptionController = TextEditingController();
+
   final currencyController = SingleValueDropDownController();
+
   final reportNameController = TextEditingController();
 
+  List<DropDownValueModel> dropDownListProjects = [];
+  List<DropDownValueModel> dropDownListCurrency = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for(int i=0; i<queryEmployeeController.projects.length; i++){
+      dropDownListProjects.add(DropDownValueModel(
+          name: queryEmployeeController.projects[i]["Project Name"],
+          value: queryEmployeeController.projects[i]["Project Id"])
+      );
+    }
+
+    for(int i=0; i<queryEmployeeController.currency.length; i++){
+      dropDownListCurrency.add(DropDownValueModel(
+          name: queryEmployeeController.currency[i],
+          value: queryEmployeeController.currency[i])
+      );
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("EXPENSE REPORT"),
+        title: const Text("EXPENSE REPORT", style: TextStyle(color: Colors.black),),
         leading: const BackButton(
             color: Colors.black
         ),
@@ -42,10 +77,7 @@ class AddExpenseReport extends StatelessWidget {
                 fontWeight: FontWeight.w900),),
             DropDownTextFielD(
               controller: projectController,
-              dropDownList: const [
-                DropDownValueModel(name: 'Web Dev', value: 'Web Dev'),
-                DropDownValueModel(name: "Cubastion Consulting Private Limited" , value: "Cubastion Consulting Private Limited"),
-              ],
+              dropDownList: dropDownListProjects,
               hintText: "Select Project",),
             const SizedBox(height: 10,),
             ///start date
@@ -76,13 +108,7 @@ class AddExpenseReport extends StatelessWidget {
                 fontWeight: FontWeight.w900),),
             DropDownTextFielD(
               controller: currencyController,
-              dropDownList: [
-                DropDownValueModel(name: 'INR', value: 'INR'),
-                DropDownValueModel(name: 'USD', value: 'USD'),
-                DropDownValueModel(name: 'EUR', value: 'EUR'),
-                DropDownValueModel(name: 'OTH', value: 'OTH'),
-                DropDownValueModel(name: 'JPY', value: 'JPY'),
-              ],
+              dropDownList: dropDownListCurrency,
               hintText: "Select Type",),
             const SizedBox(height: 10,),
             ///Report Name

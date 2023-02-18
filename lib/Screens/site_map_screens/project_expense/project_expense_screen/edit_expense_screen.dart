@@ -11,6 +11,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../../constants.dart';
 import '../../../../controllers/employee_expense_controller.dart';
+import '../../../../controllers/query_employee_controller.dart';
 import '../../../../models/add_expense_model.dart';
 import '../../../../widgets/drop_down_textfield.dart';
 import 'package:path/path.dart';
@@ -33,9 +34,30 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
   late final typeController = SingleValueDropDownController(data: DropDownValueModel(name: widget.addExpenseModel.expenseType, value:  widget.addExpenseModel.expenseType));
   late final projectController = SingleValueDropDownController(data: DropDownValueModel(name: widget.addExpenseModel.projectName, value:  widget.addExpenseModel.projectName));
   late final imagePickerController = Get.put(ImagePickercontroller());
+  final QueryEmployeeController queryEmployeeController = Get.find();
+  List<DropDownValueModel> dropDownListProjects = [];
+  List<DropDownValueModel> dropDownListTypes = [];
   bool loadingData = false;
-
   final submitProjectExpenseController = Get.put(SubmitProjectExpenseController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for(int i=0; i<queryEmployeeController.projects.length; i++){
+      dropDownListProjects.add(DropDownValueModel(
+          name: queryEmployeeController.projects[i]["Project Name"],
+          value: queryEmployeeController.projects[i]["Project Id"])
+      );
+    }
+
+    for(int i=0; i<queryEmployeeController.expenseData.length; i++){
+      dropDownListTypes.add(DropDownValueModel(
+          name: queryEmployeeController.expenseData[i],
+          value: queryEmployeeController.expenseData[i])
+      );
+    }
+  }
 
 
   @override
@@ -55,10 +77,7 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
               ),
               child: DropDownTextFielD(
                 controller: projectController,
-                dropDownList: const [
-                  DropDownValueModel(name: 'Web Dev', value: '7bz72xg15b50t2z'),
-                  DropDownValueModel(name: "Cubastion Consulting Private Limited", value: "mxbyyp9xqhazhwk"),
-                ],
+                dropDownList: dropDownListProjects,
                 hintText: "Select Project",
               ),
             ),
@@ -140,15 +159,7 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
             ),
             DropDownTextFielD(
               controller: typeController,
-              dropDownList: const [
-                DropDownValueModel(name: 'Food', value: 'Food'),
-                DropDownValueModel(name: 'Hotel', value: 'Hotel'),
-                DropDownValueModel(name: 'Internet', value: 'Internet'),
-                DropDownValueModel(name: 'Mobile', value: 'Mobile'),
-                DropDownValueModel(name: 'Office', value: 'Office'),
-                DropDownValueModel(name: 'Others', value: 'Others'),
-                DropDownValueModel(name: 'Travel', value: 'Travel'),
-              ],
+              dropDownList: dropDownListTypes,
               hintText: "Select Type",
             ),
             const SizedBox(

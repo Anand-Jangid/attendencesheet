@@ -274,6 +274,23 @@ class ApiService{
 
   }
 
+  static Future LOVforExpense() async{
+    var headers = {
+      'token': tokens
+    };  
+    var response = await http.get(
+      Uri.parse("$baseURL/expenses/LOVForExpense"),
+      headers: headers
+    );
+    if(response.statusCode == 200){
+      var data = jsonDecode(response.body);
+      return data;
+    }
+    else{
+      throw Exception("LOV for expense API \n ${response.body}");
+    }
+  }
+
   /// API for getting list of expenses
   static Future<List> getExpenses() async{
     var headers = {
@@ -314,13 +331,9 @@ class ApiService{
 
   //adding project expense
   static Future getFile() async{
-    print("1");
     FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
-    print("2");
     if (result != null) {
-      print("3");
       List<File> files = result.paths.map((path) => File(path!)).toList();
-      print("4");
       return files;
     } else {
       // User canceled the picker

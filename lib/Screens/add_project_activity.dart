@@ -1,6 +1,7 @@
 import 'package:attendencesheet/controllers/project_activity_controller.dart';
 import 'package:attendencesheet/controllers/query_employee_controller.dart';
 import 'package:attendencesheet/models/project_activity_model.dart';
+import 'package:attendencesheet/widgets/drop_down_textfield.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -22,13 +23,25 @@ class ProjectActivity extends StatefulWidget {
 
 class _ProjectActivityState extends State<ProjectActivity> {
 
-
+  List<DropDownValueModel> dropdownList = [];
   final QueryEmployeeController queryEmployeeController = Get.find();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   SingleValueDropDownController projectNameController = SingleValueDropDownController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController durationController = TextEditingController();
   final ProjectActivityController projectActivityController = Get.find();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    for(int i=0; i<queryEmployeeController.projects.length; i++){
+      dropdownList.add(DropDownValueModel(
+          name: queryEmployeeController.projects[i]["Project Name"],
+          value: queryEmployeeController.projects[i]["Project Name"]));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,33 +71,31 @@ class _ProjectActivityState extends State<ProjectActivity> {
                   )),
               const SizedBox(height: 10),
               ///Projects ---- textfield
-              DropDownTextField(
-
-                textFieldDecoration:InputDecoration(
-                  hintText:'Select Project Name' ,
-                  hintStyle: KtextstyleActivity,
-                  enabledBorder:OutlineInputBorder(
-                    borderSide:const BorderSide(color: Colors.grey),
-                    borderRadius:BorderRadius.circular(10.0)
-                  ),
-                  focusedBorder:OutlineInputBorder(
-                      borderSide:const BorderSide(color: Colors.grey),
-                      borderRadius:BorderRadius.circular(10.0)
-                  )
-                ),
-                controller: projectNameController,
-                clearOption: true,
-                dropdownRadius: 10.0,
-                textStyle:KtextstyleActivity1,
-                listTextStyle:KtextstyleActivity1,
-                dropDownList: const [
-                  DropDownValueModel(
-                      name: 'Cubastion Consulting Private Limited',
-                      value: 'Cubastion Consulting Private Limited'),
-                  DropDownValueModel(name: 'Web Dev', value: 'Web Dev')
-                ],
-                onChanged: (val) {},
-              ),
+              DropDownTextFielD(
+                  hintText: 'Select Project Name',
+                  controller: projectNameController,
+                  dropDownList: dropdownList),
+              // DropDownTextField(
+              //   textFieldDecoration:InputDecoration(
+              //     hintText:'Select Project Name' ,
+              //     hintStyle: KtextstyleActivity,
+              //     enabledBorder:OutlineInputBorder(
+              //       borderSide:const BorderSide(color: Colors.grey),
+              //       borderRadius:BorderRadius.circular(10.0)
+              //     ),
+              //     focusedBorder:OutlineInputBorder(
+              //         borderSide:const BorderSide(color: Colors.grey),
+              //         borderRadius:BorderRadius.circular(10.0)
+              //     )
+              //   ),
+              //   controller: projectNameController,
+              //   clearOption: true,
+              //   dropdownRadius: 10.0,
+              //   textStyle:KtextstyleActivity1,
+              //   listTextStyle:KtextstyleActivity1,
+              //   dropDownList: dropdownList,
+              //   onChanged: (val) {},
+              // ),
               const SizedBox(height: 20),
               ///ActivityDescription ---- text
               const Padding(

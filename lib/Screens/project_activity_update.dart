@@ -1,31 +1,32 @@
 import 'package:attendencesheet/apis/api_service.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constants.dart';
 import 'package:intl/intl.dart';
+
+import '../controllers/query_employee_controller.dart';
 class ProjectActivityUpdate extends StatefulWidget {
 
   final String date;
   final String  projectName;
   final String projectDescription;
   final String projectDuration;
-  // final Function UpdateFunction;
-  // final List projects;
+
   const ProjectActivityUpdate({
     super.key,
     required this.date,
     required this.projectDescription,
     required this.projectDuration,
     required this.projectName,
-    // required this.UpdateFunction,
-    // required this.projects
   });
   @override
   State<ProjectActivityUpdate> createState() => _ProjectActivityState();
 }
 
 class _ProjectActivityState extends State<ProjectActivityUpdate> {
+
 
   @override
   Widget build(BuildContext context) {

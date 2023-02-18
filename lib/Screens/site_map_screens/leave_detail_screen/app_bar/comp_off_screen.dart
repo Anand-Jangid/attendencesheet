@@ -1,4 +1,5 @@
 import 'package:attendencesheet/apis/api_service.dart';
+import 'package:attendencesheet/controllers/query_employee_controller.dart';
 import 'package:attendencesheet/controllers/reporting_manager_controller.dart';
 import 'package:attendencesheet/widgets/drop_down_textfield.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -18,19 +19,16 @@ class CompOffScreen extends StatefulWidget {
 class _CompOffScreenState extends State<CompOffScreen> {
 
   bool isLoading = false;
-  // final ReportingManagerController reportingManagerController1 = ReportingManagerController();
-  // String reportingManagerName = "${reportingManagerController1.reportingManagerFirstName} ${reportingManagerController1.reporintManagerLastName}";
+
   final ReportingManagerController reportingManagerController = Get.find();
+  final QueryEmployeeController queryEmployeeController = Get.find();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     final ReportingManagerController reportingManagerController = Get.find();
-    print(reportingManagerController.reportingManagerFirstName);
-
-    // final ReportingManagerController reportingManagerController1 = ReportingManagerController();
     String reportingManagerName = "${reportingManagerController.reportingManagerFirstName} ${reportingManagerController.reporintManagerLastName}";
-    // TextEditingController manager =TextEditingController(text:reportingManagerName);
   }
 
   TextEditingController dateController = TextEditingController();
@@ -129,27 +127,7 @@ class _CompOffScreenState extends State<CompOffScreen> {
                         DropDownValueModel(name: '0.5', value: '0.5'),
                         DropDownValueModel(name: '1', value: '1')
                       ]),
-                  // DropDownTextField(
-                  //   textFieldDecoration: InputDecoration(
-                  //       hintText: 'Select Days',
-                  //       hintStyle: KtextstyleActivity,
-                  //       enabledBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(color: Colors.grey),
-                  //           borderRadius: BorderRadius.circular(10.0)),
-                  //       focusedBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(color: Colors.grey),
-                  //           borderRadius: BorderRadius.circular(10.0))),
-                  //   controller: numberOfDaysController,
-                  //   clearOption: true,
-                  //   dropdownRadius: 10.0,
-                  //   textStyle: KtextstyleActivity1,
-                  //   listTextStyle: KtextstyleActivity1,
-                  //   dropDownList: const [
-                  //     DropDownValueModel(name: '0.5', value: '0.5'),
-                  //     DropDownValueModel(name: '1', value: '1')
-                  //   ],
-                  //   onChanged: (val) {},
-                  // ),
+
                   const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 9),
                       child: Text(
@@ -157,19 +135,6 @@ class _CompOffScreenState extends State<CompOffScreen> {
                         style: KtextstyleActivity,
                       )),
                   const SizedBox(height: 10),
-                  // TextFormField(
-                  //   style:KtextstyleActivity1,
-                  //   controller: manager,
-                  //   readOnly: true,
-                  //   decoration: InputDecoration(
-                  //     hintStyle: KtextstyleActivity1,
-                  //     focusedBorder: OutlineInputBorder(
-                  //         borderSide: BorderSide(color: Colors.grey)),
-                  //     border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(10.0)),
-                  //   ),
-                  // ),
-                  // Text(manager);
                   Container(
                       height: 60,
                       width: double.infinity,
@@ -179,7 +144,7 @@ class _CompOffScreenState extends State<CompOffScreen> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("${reportingManagerController.reportingManagerFirstName.value} ${reportingManagerController.reporintManagerLastName.value}",style: KtextstyleActivity1,),
+                        child: Text("${queryEmployeeController.reportingManagerFirstName.value} ${queryEmployeeController.reportingManagerMiddleName.value} ${queryEmployeeController.reportingManagerLastName.value}",style: KtextstyleActivity1,),
                       )),
                 ],
               ),

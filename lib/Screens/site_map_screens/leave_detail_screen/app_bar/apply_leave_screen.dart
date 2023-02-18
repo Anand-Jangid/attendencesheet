@@ -1,4 +1,5 @@
 import 'package:attendencesheet/apis/api_service.dart';
+import 'package:attendencesheet/controllers/query_employee_controller.dart';
 import 'package:attendencesheet/controllers/reporting_manager_controller.dart';
 import 'package:attendencesheet/widgets/date_text_field.dart';
 import 'package:attendencesheet/widgets/drop_down_textfield.dart';
@@ -24,6 +25,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   TextEditingController dateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final numberOfDaysController = SingleValueDropDownController();
+  final QueryEmployeeController queryEmployeeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +114,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text("${reportingManagerController.reportingManagerFirstName.value} ${reportingManagerController.reporintManagerLastName.value}",style: KtextstyleActivity1,),
+                      child: Text("${queryEmployeeController.reportingManagerFirstName.value} ${queryEmployeeController.reportingManagerMiddleName.value} ${queryEmployeeController.reportingManagerLastName.value}",style: KtextstyleActivity1,),
                     )),
                 ],
               ),

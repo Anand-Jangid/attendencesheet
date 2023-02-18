@@ -14,7 +14,7 @@ class ExpenseReportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("EXPENSE REPORTS"),
+        title: const Text("EXPENSE REPORTS", style: TextStyle(color: Colors.black),),
         leading: const BackButton(
             color: Colors.black
         ),
