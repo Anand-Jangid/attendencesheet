@@ -43,7 +43,7 @@ class PeojectExpenseWidget extends StatelessWidget {
                                 Flexible(
                                   child: Text(
                                     '$expenseType :$projectName',
-                                    softWrap: true,
+                                    // softWrap: true,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(

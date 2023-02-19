@@ -293,13 +293,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                               )
                             ],
                           ),
-                          SizedBox(
-                            width: 70,
+                          Expanded(
                             child: Center(
-                              child: Text(basename(imagePickerController.filePathList[index].path),
-                                maxLines: 5,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
+                              child: Text(basename(imagePickerController.filePathList[index].path,),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
@@ -328,9 +326,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             color: Colors.grey,
                             child: Center(
                                 child: Text(
-                              'Cancel',
-                              style: Ktextstylecardbutton,
-                            ))),
+                                  'Cancel',
+                                  style: Ktextstylecardbutton,
+                                ))),
                       ))),
 
               ///submit
@@ -359,9 +357,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           child: (submitProjectExpenseController.showSpinner.value)
                               ? const Center(child: CircularProgressIndicator())
                               : const Card(
-                                  color: Colors.orangeAccent,
-                                  child: Center(
-                                      child: Text(
+                              color: Colors.orangeAccent,
+                              child: Center(
+                                  child: Text(
                                     'SUBMIT',
                                     style: Ktextstylecardbutton,
                                   ))));
