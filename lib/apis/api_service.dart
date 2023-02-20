@@ -459,4 +459,21 @@ class ApiService{
       print(response.reasonPhrase);
     }
   }
+
+  static Future downloadAttachmentAPI(String itemID, String fileName) async{
+    var headers = {
+      'token': tokens
+    };
+    var response = await http.get(
+      Uri.parse("$baseURL/files/dowloadOnedriveFile?id=$itemID&fileName=$fileName"),
+      headers: headers
+    );
+    if(response.statusCode == 200){
+      var data = jsonDecode(response.body);
+      return data["data"];
+    }
+    else{
+      throw Exception("downloadAttachmentAPI \n Status code is not 200\n body: ${response.body}");
+    }
+  }
 }

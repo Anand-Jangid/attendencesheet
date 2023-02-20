@@ -3,6 +3,7 @@ import 'package:attendencesheet/controllers/query_employee_controller.dart';
 import 'package:attendencesheet/controllers/reporting_manager_controller.dart';
 import 'package:attendencesheet/widgets/date_text_field.dart';
 import 'package:attendencesheet/widgets/drop_down_textfield.dart';
+import 'package:attendencesheet/widgets/text_field.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,13 +20,14 @@ class ApplyLeaveScreen extends StatefulWidget {
 class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
 
   bool isLoading = false;
-
+  final GlobalKey<FormState> _formkey=GlobalKey<FormState>();
   final ReportingManagerController reportingManagerController = Get.find();
 
   TextEditingController dateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final numberOfDaysController = SingleValueDropDownController();
   final QueryEmployeeController queryEmployeeController = Get.find();
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
       body: (isLoading) ? const Center(child: CircularProgressIndicator()) :Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
+          key: _formkey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -57,7 +60,9 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                       )),
                   const SizedBox(height: 10),
                   ///Calendar textfield
-                  DateTextField(dateController: dateController),
+                  DateTextField(
+                      dateController: dateController
+                  ),
                   const SizedBox(height: 20),
                   ///description text
                   const Padding(
@@ -68,18 +73,13 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                       )),
                   const SizedBox(height: 10),
                   ///description controller
-                  TextFormField(
-                    style:KtextstyleActivity1,
-                    controller: descriptionController,
-                    decoration: InputDecoration(
+                  TextFielD(
                       hintText: 'Enter Description',
-                      hintStyle: KtextstyleActivity1,
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                    ),
+                      controller: descriptionController,
+                      textInputType: TextInputType.text,
+                      valText: "Please Enter the Description"
                   ),
+
                   const SizedBox(height: 20),
                   ///Number of days text
                   const Padding(
@@ -91,10 +91,11 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                   const SizedBox(height: 10),
                   ///Number of days textfield
                   DropDownTextFielD(
-                      dropDownList: const [
+                    dropDownList: const [
                         DropDownValueModel(name: '0.5', value: '0.5'),
                         DropDownValueModel(name: '1', value: '1')
                       ],
+                    valText: "Please Select Number of Days",
                     hintText: 'Select Days',
                     controller: numberOfDaysController,
                   ),
@@ -143,27 +144,33 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                       height: 60,
                       child: GestureDetector(
                           onTap: () async{
-                            setState(() {
-                              isLoading = true;
-                            });
-                            var  employeeLeaveModel = await ApiService.setLeaveData(
-                                dateController.text,
-                                numberOfDaysController.dropDownValue!.value.toString(),
-                                descriptionController.text);
-                            if(employeeLeaveModel.status == "1234567890"){
-                              Get.snackbar("Unable to apply leave", "You have alredy applied for given date",
-                                snackPosition: SnackPosition.TOP,
-                              );
+                            final FormState? form = _formkey.currentState;
+                            if (form!.validate()) {
                               setState(() {
-                                isLoading = false;
+                                isLoading = true;
                               });
+                              var  employeeLeaveModel = await ApiService.setLeaveData(
+                                  dateController.text,
+                                  numberOfDaysController.dropDownValue!.value.toString(),
+                                  descriptionController.text);
+                              if(employeeLeaveModel.status == "1234567890"){
+                                Get.snackbar("Unable to apply leave", "You have alredy applied for given date",
+                                  snackPosition: SnackPosition.TOP,
+                                );
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
+                              else{
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Get.back();
+                                Get.back();
+                              }
                             }
-                            else{
-                              setState(() {
-                                isLoading = false;
-                              });
-                              Get.back();
-                              Get.back();
+                            else {
+                              print('Form is invalid');
                             }
                           },
                           child: const Card(

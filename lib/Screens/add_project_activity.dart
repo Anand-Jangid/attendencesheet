@@ -2,6 +2,7 @@ import 'package:attendencesheet/controllers/project_activity_controller.dart';
 import 'package:attendencesheet/controllers/query_employee_controller.dart';
 import 'package:attendencesheet/models/project_activity_model.dart';
 import 'package:attendencesheet/widgets/drop_down_textfield.dart';
+import 'package:attendencesheet/widgets/text_field.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -22,10 +23,9 @@ class ProjectActivity extends StatefulWidget {
 }
 
 class _ProjectActivityState extends State<ProjectActivity> {
-
+  final GlobalKey<FormState> _formkey=GlobalKey<FormState>();
   List<DropDownValueModel> dropdownList = [];
   final QueryEmployeeController queryEmployeeController = Get.find();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   SingleValueDropDownController projectNameController = SingleValueDropDownController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController durationController = TextEditingController();
@@ -40,6 +40,16 @@ class _ProjectActivityState extends State<ProjectActivity> {
       dropdownList.add(DropDownValueModel(
           name: queryEmployeeController.projects[i]["Project Name"],
           value: queryEmployeeController.projects[i]["Project Name"]));
+    }
+  }
+
+  void validateAndSave() {
+    final FormState? form = _formkey.currentState;
+    if (form!.validate()) {
+      print('Form is valid');
+    }
+    else {
+      print('Form is invalid');
     }
   }
 
@@ -58,7 +68,7 @@ class _ProjectActivityState extends State<ProjectActivity> {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Form(
-          key:_formKey,
+          key: _formkey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,30 +82,10 @@ class _ProjectActivityState extends State<ProjectActivity> {
               const SizedBox(height: 10),
               ///Projects ---- textfield
               DropDownTextFielD(
+                valText: "Please Select Project Name",
                   hintText: 'Select Project Name',
                   controller: projectNameController,
                   dropDownList: dropdownList),
-              // DropDownTextField(
-              //   textFieldDecoration:InputDecoration(
-              //     hintText:'Select Project Name' ,
-              //     hintStyle: KtextstyleActivity,
-              //     enabledBorder:OutlineInputBorder(
-              //       borderSide:const BorderSide(color: Colors.grey),
-              //       borderRadius:BorderRadius.circular(10.0)
-              //     ),
-              //     focusedBorder:OutlineInputBorder(
-              //         borderSide:const BorderSide(color: Colors.grey),
-              //         borderRadius:BorderRadius.circular(10.0)
-              //     )
-              //   ),
-              //   controller: projectNameController,
-              //   clearOption: true,
-              //   dropdownRadius: 10.0,
-              //   textStyle:KtextstyleActivity1,
-              //   listTextStyle:KtextstyleActivity1,
-              //   dropDownList: dropdownList,
-              //   onChanged: (val) {},
-              // ),
               const SizedBox(height: 20),
               ///ActivityDescription ---- text
               const Padding(
@@ -106,19 +96,25 @@ class _ProjectActivityState extends State<ProjectActivity> {
                   )),
               const SizedBox(height: 10),
               /// ActivityDescription -------textfield
-              TextFormField(
-                style:KtextstyleActivity1,
-                controller: descriptionController,
-                decoration: InputDecoration(
-
+              TextFielD(
                   hintText: 'Enter Project Description',
-                  hintStyle: KtextstyleActivity1,
-                  focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                ),
+                  controller: descriptionController,
+                  textInputType: TextInputType.text,
+                  valText: "Please Enter the Project Description"
               ),
+              // TextFormField(
+              //   style:KtextstyleActivity1,
+              //   controller: descriptionController,
+              //   decoration: InputDecoration(
+              //
+              //     hintText: 'Enter Project Description',
+              //     hintStyle: KtextstyleActivity1,
+              //     focusedBorder: const OutlineInputBorder(
+              //         borderSide: BorderSide(color: Colors.grey)),
+              //     border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10.0)),
+              //   ),
+              // ),
               const SizedBox(height: 20),
               /// Activity duration ------ text
               const Padding(
@@ -129,19 +125,25 @@ class _ProjectActivityState extends State<ProjectActivity> {
                   )),
               const SizedBox(height: 10),
               /// Activity Duration ----textfield
-              TextFormField(
-                style:KtextstyleActivity1,
-                keyboardType:TextInputType.number,
-                controller: durationController,
-                decoration: InputDecoration(
+              TextFielD(
                   hintText: 'Enter Number of Hours',
-                  hintStyle: KtextstyleActivity1,
-                  focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                ),
+                  controller: durationController,
+                  textInputType: TextInputType.number,
+                  valText: "Please Enter the Duration of Project"
               ),
+              // TextFormField(
+              //   style:KtextstyleActivity1,
+              //   keyboardType:TextInputType.number,
+              //   controller: durationController,
+              //   decoration: InputDecoration(
+              //     hintText: 'Enter Number of Hours',
+              //     hintStyle: KtextstyleActivity1,
+              //     focusedBorder: const OutlineInputBorder(
+              //         borderSide: BorderSide(color: Colors.grey)),
+              //     border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10.0)),
+              //   ),
+              // ),
               const Spacer(),
 
               Row(children: [
@@ -167,8 +169,8 @@ class _ProjectActivityState extends State<ProjectActivity> {
                       height: 60,
                       child: GestureDetector(
                           onTap: () {
-                            _formKey.currentState!.validate();
                             bool available = false;
+                            validateAndSave();
 
                             if(queryEmployeeController.attendanceList[widget.index]["CUBN Timesheet"].isEmpty){
                               projectActivityController.projectActivityList.add(ProjectActivityModel(

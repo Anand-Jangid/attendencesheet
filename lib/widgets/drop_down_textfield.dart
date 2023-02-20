@@ -7,12 +7,14 @@ class DropDownTextFielD extends StatelessWidget {
   final String hintText;
   final SingleValueDropDownController controller;
   final List<DropDownValueModel> dropDownList;
+  final String valText;
 
   const DropDownTextFielD({
     Key? key,
     required this.hintText,
     required this.controller,
     required this.dropDownList,
+    required this.valText,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class DropDownTextFielD extends StatelessWidget {
               borderSide: BorderSide(color: Colors.grey),
               borderRadius: BorderRadius.circular(10.0))),
       controller: controller,
+      validator:(val)=> val!.isEmpty? valText :null,
       clearOption: true,
       dropdownRadius: 10.0,
       textStyle: KtextstyleActivity1,

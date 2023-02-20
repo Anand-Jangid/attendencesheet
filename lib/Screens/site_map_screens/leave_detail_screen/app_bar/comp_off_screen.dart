@@ -1,7 +1,9 @@
 import 'package:attendencesheet/apis/api_service.dart';
 import 'package:attendencesheet/controllers/query_employee_controller.dart';
 import 'package:attendencesheet/controllers/reporting_manager_controller.dart';
+import 'package:attendencesheet/widgets/date_text_field.dart';
 import 'package:attendencesheet/widgets/drop_down_textfield.dart';
+import 'package:attendencesheet/widgets/text_field.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +21,7 @@ class CompOffScreen extends StatefulWidget {
 class _CompOffScreenState extends State<CompOffScreen> {
 
   bool isLoading = false;
-
+  final GlobalKey<FormState> _formkey=GlobalKey<FormState>();
   final ReportingManagerController reportingManagerController = Get.find();
   final QueryEmployeeController queryEmployeeController = Get.find();
 
@@ -34,6 +36,11 @@ class _CompOffScreenState extends State<CompOffScreen> {
   TextEditingController dateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final numberOfDaysController = SingleValueDropDownController();
+
+  void validateAndSave() {
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +57,7 @@ class _CompOffScreenState extends State<CompOffScreen> {
       body: (isLoading) ? const Center(child: CircularProgressIndicator()) :Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
+          key: _formkey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -65,29 +73,7 @@ class _CompOffScreenState extends State<CompOffScreen> {
                       )),
                   const SizedBox(height: 10),
                   ///Calendar textfield
-                  TextField(
-                    controller: dateController,
-                    readOnly: true,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100));
-                      if (pickedDate != null) {
-                        String formatteddate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                        setState(() {
-                          dateController.text = formatteddate;
-                        });
-                      }
-                    },
-                    decoration: InputDecoration(
-                        hintText: 'Select Date',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(7)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(7))),
-                  ),
+                  DateTextField(dateController: dateController),
                   const SizedBox(height: 20),
                   ///description text
                   const Padding(
@@ -98,18 +84,24 @@ class _CompOffScreenState extends State<CompOffScreen> {
                       )),
                   const SizedBox(height: 10),
                   ///description controller
-                  TextFormField(
-                    style:KtextstyleActivity1,
-                    controller: descriptionController,
-                    decoration: InputDecoration(
+                  TextFielD(
                       hintText: 'Enter Description',
-                      hintStyle: KtextstyleActivity1,
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                    ),
+                      controller: descriptionController,
+                      textInputType: TextInputType.text,
+                      valText: "Please Enter the Project Description"
                   ),
+                  // TextFormField(
+                  //   style:KtextstyleActivity1,
+                  //   controller: descriptionController,
+                  //   decoration: InputDecoration(
+                  //     hintText: 'Enter Description',
+                  //     hintStyle: KtextstyleActivity1,
+                  //     focusedBorder: const OutlineInputBorder(
+                  //         borderSide: BorderSide(color: Colors.grey)),
+                  //     border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10.0)),
+                  //   ),
+                  // ),
                   const SizedBox(height: 20),
                   ///Number of days text
                   const Padding(
@@ -121,6 +113,7 @@ class _CompOffScreenState extends State<CompOffScreen> {
                   const SizedBox(height: 10),
                   ///Number of days textfield
                   DropDownTextFielD(
+                    valText: "Please Select Number of Days",
                       hintText: "Select Days",
                       controller: numberOfDaysController,
                       dropDownList: const [
@@ -172,28 +165,35 @@ class _CompOffScreenState extends State<CompOffScreen> {
                       height: 60,
                       child: GestureDetector(
                           onTap: () async {
-                            var typedDate = DateTime.parse(dateController.text.toString());
-                            var earlyDate = DateTime.now().subtract(const Duration(days: 3));
-                            if(typedDate.isAfter(DateTime.now())){
-                              Get.snackbar("Unable to apply comp off",
-                                  "You can't apply compOff 3 days after your working date or Future Date.");
-                            }
-                            else if(typedDate.isBefore(earlyDate)){
-                              Get.snackbar("Unable to apply comp off",
-                                  "You can't apply compOff 3 days after your working date or Future Date.");
-                            }
-                            else{
-                              EmployeeLeaveModel1 employeeLeaveModel = await ApiService.setCompOffData(dateController.text, numberOfDaysController.dropDownValue!.value.toString(), descriptionController.text);
-                              if(employeeLeaveModel.status == "1234567890"){
-                                Get.snackbar("Unable to apply Comp Off", "You have alredy applied for given date",
-                                  snackPosition: SnackPosition.TOP,
-                                );
+                            final FormState? form = _formkey.currentState;
+                            if (form!.validate()) {
+                              var typedDate = DateTime.parse(dateController.text.toString());
+                              var earlyDate = DateTime.now().subtract(const Duration(days: 3));
+                              if(typedDate.isAfter(DateTime.now())){
+                                Get.snackbar("Unable to apply comp off",
+                                    "You can't apply compOff 3 days after your working date or Future Date.");
+                              }
+                              else if(typedDate.isBefore(earlyDate)){
+                                Get.snackbar("Unable to apply comp off",
+                                    "You can't apply compOff 3 days after your working date or Future Date.");
                               }
                               else{
-                                Get.back();
-                                Get.back();
+                                EmployeeLeaveModel1 employeeLeaveModel = await ApiService.setCompOffData(dateController.text, numberOfDaysController.dropDownValue!.value.toString(), descriptionController.text);
+                                if(employeeLeaveModel.status == "1234567890"){
+                                  Get.snackbar("Unable to apply Comp Off", "You have alredy applied for given date",
+                                    snackPosition: SnackPosition.TOP,
+                                  );
+                                }
+                                else{
+                                  Get.back();
+                                  Get.back();
+                                }
                               }
                             }
+                            else {
+                              print('Form is invalid');
+                            }
+
 
                           },
                           child: const Card(

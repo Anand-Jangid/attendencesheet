@@ -15,8 +15,9 @@ class DateTextField extends StatefulWidget {
 class _DateTextFieldState extends State<DateTextField> {
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: widget.dateController,
+      validator:(val)=> val!.isEmpty?'Please Select the Date':null,
       readOnly: true,
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(
