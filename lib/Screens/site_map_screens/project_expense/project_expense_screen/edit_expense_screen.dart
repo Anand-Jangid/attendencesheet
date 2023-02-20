@@ -91,206 +91,179 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-            const SizedBox(
-              height: 10,
-            ),
+                  ///Amount
+                  const Text(
+                    "AMOUNT",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  TextFielD(
+                    hintText: "Enter Amount",
+                    controller: amountController,
+                    textInputType: TextInputType.number,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-            ///Amount
-            const Text(
-              "AMOUNT",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w900),
-            ),
-            TextFielD(
-              hintText: "Enter Amount",
-              controller: amountController,
-              textInputType: TextInputType.number,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+                  ///Invoice
+                  const Text(
+                    "INVOICE",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  TextFielD(
+                    hintText: "Enter Invoice",
+                    controller: invoiceController,
+                    textInputType: TextInputType.text,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-            ///Invoice
-            const Text(
-              "INVOICE",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w900),
-            ),
-            TextFielD(
-              hintText: "Enter Invoice",
-              controller: invoiceController,
-              textInputType: TextInputType.text,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+                  ///Description
+                  const Text(
+                    "DESCRIPTION",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  TextFielD(
+                    hintText: "Enter Description",
+                    controller: descriptionController,
+                    textInputType: TextInputType.text,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-            ///Description
-            const Text(
-              "DESCRIPTION",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w900),
-            ),
-            TextFielD(
-              hintText: "Enter Description",
-              controller: descriptionController,
-              textInputType: TextInputType.text,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+                  ///Type
+                  const Text(
+                    "TYPE",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  DropDownTextFielD(
+                    controller: typeController,
+                    dropDownList: dropDownListTypes,
+                    hintText: "Select Type",
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-            ///Type
-            const Text(
-              "TYPE",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w900),
-            ),
-            DropDownTextFielD(
-              controller: typeController,
-              dropDownList: dropDownListTypes,
-              hintText: "Select Type",
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+                  ///date
+                  const Text(
+                    "DATE",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  TextField(
+                    controller: dateController,
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100));
+                      if (pickedDate != null) {
+                        String formatteddate =
+                        DateFormat('MM-dd-yyyy').format(pickedDate);
+                        setState(() {
+                          dateController.text = formatteddate;
+                        });
+                      }
+                    },
+                    decoration: InputDecoration(
+                        hintText: 'Select Date',
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7))),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-            ///date
-            const Text(
-              "DATE",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w900),
-            ),
-            TextField(
-              controller: dateController,
-              readOnly: true,
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100));
-                if (pickedDate != null) {
-                  String formatteddate =
-                  DateFormat('MM-dd-yyyy').format(pickedDate);
-                  setState(() {
-                    dateController.text = formatteddate;
-                  });
-                }
-              },
-              decoration: InputDecoration(
-                  hintText: 'Select Date',
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7)),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7))),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-
-            ///Add attachment
-            const Text(
-              "ADD ATTACHMENT",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w900),
-            ),
-            InkWell(
-              onTap: () {
-                // Get.defaultDialog(
-                //     title: "Add Attachment",
-                //     content: Column(
-                //       children: [
-                //         TextButton(
-                //             onPressed: () {},
-                //             child: const Text("Use Camera")),
-                //         TextButton(
-                //             onPressed: () async {
-                //               await imagePickerController.getFiles();
-                //               //imagePickerController.imagePicked.value = true;
-                //               Get.back();
-                //             },
-                //             child: (loadingData)
-                //                 ? const Center(
-                //                 child: CircularProgressIndicator())
-                //                 : const Text("Pick From Device")),
-                //         TextButton(
-                //             onPressed: () {
-                //               Get.back();
-                //             },
-                //             child: const Text("Cancel")),
-                //       ],
-                //     ));
-              },
-              child: Container(
-                height: 45,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(10)),
-                child: const Center(
-                  child: Text(
+                  ///Add attachment
+                  const Text(
                     "ADD ATTACHMENT",
                     style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
                         fontWeight: FontWeight.w900),
                   ),
-                ),
-              ),
-            ),
-
-            ///asset icon
-
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: widget.addExpenseModel.attachment.length,
-                itemBuilder: (context, index){
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Flexible(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "asset/images/gallary_image.png",
-                            height: 60,
-                            width: 60,
-                          ),
-                          SizedBox(
-                            width: 70,
-                            child: Center(
-                              child: Text(widget.addExpenseModel.attachment[index]["name"],
-                                maxLines: 5,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ],
+                  Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Center(
+                      child: Text(
+                        "ADD ATTACHMENT",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w900),
                       ),
                     ),
-                  );
-                },
+                  ),
+
+                  ///asset icon
+
+                  Expanded(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: widget.addExpenseModel.attachment.length,
+                      itemBuilder: (context, index){
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                "asset/images/gallary_image.png",
+                                height: 60,
+                                width: 60,
+                              ),
+                              SizedBox(
+                                width: 70,
+                                child: Center(
+                                  child: Text(widget.addExpenseModel.attachment[index]["name"],
+                                    maxLines: 5,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Spacer(),
-
             Row(children: [
               ///Cancel
               Expanded(
